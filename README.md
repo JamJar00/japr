@@ -9,6 +9,14 @@ TODO
 health-check <project> [--summary]
 ```
 
+### Suppressing Checks
+If you need to suppress a check (boooooo) then you can create a `healthcheck.yaml` file in the root of your project that looks something like this:
+```yaml
+override:
+  - id: CI001
+    ignore: true
+```
+
 ## Supported Languages
 Health Check will work for projects of all languages however there are additional checks for the following:
 - Python

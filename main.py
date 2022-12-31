@@ -2,6 +2,7 @@ import argparse
 from check_providers import check_providers
 from check import Result, Severity
 import os
+import yaml
 
 
 def check_directory(directory, is_summary=False):
@@ -10,12 +11,22 @@ def check_directory(directory, is_summary=False):
         print(f"'{directory}' is not a valid directory so cannot be checked")
         return
 
+    if os.path.isfile(directory + "/healthcheck.yaml"):
+        with open(directory + "/healthcheck.yaml", "r") as f:
+            data = yaml.safe_load(f)
+            try:
+                ignored_checks = [override["id"] for override in data["override"] if override["ignore"]]
+            except KeyError:
+                ignored_checks = []
+    else:
+        ignored_checks = []
+
     issues = []
     for check_provider in check_providers:
         checks = {check.id: check for check in check_provider.checks()}
 
         results = check_provider.test(directory)
-        issues.extend((result, checks[result.id]) for result in results)
+        issues.extend((result, checks[result.id]) for result in results if result.id not in ignored_checks)
 
     print(f"\033[1m{os.path.basename(directory)}\033[0;0m")
     print("=" * 10)
