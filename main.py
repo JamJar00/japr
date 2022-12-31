@@ -52,13 +52,13 @@ def check_directory(directory, is_summary=False):
 
     if score == 5:
         print()
-        print("\033[1mCongratulations on a fantastic health-check score \U0001F389\033[0;0m")
+        print("\033[1mCongratulations on a fantastic healthcheck score \U0001F389\033[0;0m")
 
     print()
 
 
 parser = argparse.ArgumentParser(
-                    prog='health-check',
+                    prog='healthcheck',
                     description='A health check for your projects')
 
 parser.add_argument('directories', nargs="*", help="a directory to scan")

@@ -1,4 +1,4 @@
-# Health Check
+# Healthcheck
 A health check for your projects
 
 ## Installation
@@ -6,7 +6,7 @@ TODO
 
 ## Usage
 ```bash
-health-check <project> [--summary]
+healthcheck <project> [--summary]
 ```
 
 ### Suppressing Checks
