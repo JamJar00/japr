@@ -1,5 +1,5 @@
 from check import Check, CheckProvider, CheckResult, Result, Severity
-from git import Repo, InvalidGitRepositoryError
+from git import InvalidGitRepositoryError, Repo
 import os
 
 
