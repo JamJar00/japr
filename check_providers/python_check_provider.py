@@ -1,4 +1,5 @@
 from check import Check, CheckProvider, CheckResult, Result, Severity
+import glob
 import os
 import toml
 
@@ -39,6 +40,12 @@ def _extract_dependencies_from_pipfile(directory):
 
 class PythonCheckProvider(CheckProvider):
     def test(self, directory):
+        if len(glob.glob('**/*.py', recursive=True, root_dir=directory)) == 0:
+            yield CheckResult("PY001", Result.NOT_APPLICABLE)
+            yield CheckResult("PY002", Result.NOT_APPLICABLE)
+            yield CheckResult("PY003", Result.NOT_APPLICABLE)
+            return
+        
         yield CheckResult("PY001", Result.PASSED if not os.path.isfile(directory + "/requirements.txt") else Result.FAILED)
         yield CheckResult("PY002", Result.PASSED if any([os.path.isfile(directory + "/Pipfile"), os.path.isfile(directory + "/pyproject.toml"), os.path.isfile(directory + "/requirements.txt")]) else Result.FAILED)
 
