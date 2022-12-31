@@ -3,6 +3,8 @@ import glob
 import os
 import toml
 
+# Sourced from https://github.com/vintasoftware/python-linters-and-code-analysis
+_linters = ["coala-bears", "yala", "prospector", "pylama", "ciocheck", "wemake-python-styleguide", "flake8"]
 
 def _extract_dependencies_from_pyproject(directory):
     with open(directory + "/pyproject.toml", "r") as f:
@@ -57,7 +59,7 @@ class PythonCheckProvider(CheckProvider):
         #     dependencies = _extract_dependencies_from_requirements(directory)
         else:
             dependencies = []
-        yield CheckResult("PY003", Result.PASSED if len(set(["pylama", "flake8"]).intersection(dependencies)) else Result.FAILED)
+        yield CheckResult("PY003", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED)
 
     def checks(self):
         return [
@@ -79,5 +81,5 @@ Setup a tool like Poetry or pipenv."""),
                     "PY003",
                     Severity.MEDIUM,
                     "Python projects should have a linter configured",
-                    """Python projects should have a comprehensive linter configured such as Pylama or Flake8""")
+                    """Python projects should have a comprehensive linter configured such as Pylama""")
                ]

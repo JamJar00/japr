@@ -16,8 +16,8 @@ class GitHubCheckProvider(CheckProvider):
             yield CheckResult("GH002", Result.NOT_APPLICABLE)
             return
 
-        yield CheckResult("GH001", Result.PASSED if any([os.path.isfile(directory + "/.github/ISSUE_TEMPLATE"), os.path.isfile(directory + "/.github/ISSUE_TEMPLATE.md")]) else Result.FAILED)
-        yield CheckResult("GH002", Result.PASSED if any([os.path.isfile(directory + "/.github/PULL_REQUEST_TEMPLATE"), os.path.isfile(directory + "/.github/PULL_REQUEST_TEMPLATE.md")]) else Result.FAILED)
+        yield CheckResult("GH001", Result.PASSED if any([os.path.isfile(directory + "/.github/ISSUE_TEMPLATE"), os.path.isfile(directory + "/.github/ISSUE_TEMPLATE.md"), os.path.isdir(directory + "/.github/ISSUE_TEMPLATE")]) else Result.FAILED)
+        yield CheckResult("GH002", Result.PASSED if any([os.path.isfile(directory + "/.github/PULL_REQUEST_TEMPLATE"), os.path.isfile(directory + "/.github/PULL_REQUEST_TEMPLATE.md"), os.path.isdir(directory + "/.github/PULL_REQUEST_TEMPLATE")]) else Result.FAILED)
 
     def checks(self):
         return [
