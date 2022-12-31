@@ -12,7 +12,7 @@ def check_directory(directory, is_summary=False):
 
     issues = []
     for check_provider in check_providers:
-        checks = {check.id : check for check in check_provider.checks()}
+        checks = {check.id: check for check in check_provider.checks()}
 
         results = check_provider.test(directory)
         issues.extend((result, checks[result.id]) for result in results)
@@ -32,22 +32,23 @@ def check_directory(directory, is_summary=False):
     print()
 
     score = int(5 - sum(check.severity.value for (result, check) in issues if result.result == Result.FAILED or result.result == Result.PRE_REQUISITE_CHECK_FAILED) / sum(check.severity.value for (_, check) in issues) * 5)
-    print("Project score: " + "\U00002B50" * score + "-" * (5 - score))
+    print("\033[1mProject score: " + "\U00002B50" * score + "\033[0;0m (out of 5)")
 
     passed = len([result for (result, _) in issues if result.result == Result.PASSED])
     failed = len([result for (result, _) in issues if result.result == Result.FAILED])
     cannot_run = len([result for (result, _) in issues if result.result == Result.PRE_REQUISITE_CHECK_FAILED])
-    print(f"Passed: {passed}, Failed: {failed}, Cannot Run Yet: {cannot_run}")
+    print(f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed: {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}\033[0;0m")
 
     if score == 5:
         print()
-        print("Congratulations on a fantastic health-check score \U0001F389")
+        print("\033[1mCongratulations on a fantastic health-check score \U0001F389\033[0;0m")
 
     print()
 
+
 parser = argparse.ArgumentParser(
-                    prog = 'health-check',
-                    description = 'A health check for your projects')
+                    prog='health-check',
+                    description='A health check for your projects')
 
 parser.add_argument('directories', nargs="*", help="a directory to scan")
 parser.add_argument('-s', '--summary', help="prints results in summary form", action='store_true')

@@ -1,4 +1,3 @@
-from os.path import isfile
 from check import Check, CheckProvider, CheckResult, Result, Severity
 from git import Repo, InvalidGitRepositoryError
 import os
@@ -27,7 +26,7 @@ class GitCheckProvider(CheckProvider):
                 "Projects should be tracked in Git version control",
                 """All projects, even the smallest personal projects benefit from being tracked in Git as it provides branch management, backups and history to your project.
 
-Run `git init` in this project to setup Git and then make a commit"""), 
+Run `git init` in this project to setup Git and then make a commit"""),
 
             Check(
                 "GI002",
