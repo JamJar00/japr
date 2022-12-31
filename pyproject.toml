@@ -10,7 +10,10 @@ packages = [{include = "health_check"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 gitpython = "^3.1.30"
+toml = "^0.10.2"
 
+[tool.poetry.group.dev.dependencies]
+pylama = "^8.4.1"
 
 [build-system]
 requires = ["poetry-core"]
