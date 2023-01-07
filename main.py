@@ -14,8 +14,8 @@ def check_directory(directory, project_type, is_summary=False):
         print(f"'{directory}' is not a valid directory so cannot be checked")
         return
 
-    if os.path.isfile(directory + "/healthcheck.yaml"):
-        with open(directory + "/healthcheck.yaml", "r") as f:
+    if os.path.isfile(directory + "/.japr.yaml"):
+        with open(directory + "/.japr.yaml", "r") as f:
             data = yaml.safe_load(f)
             try:
                 ignored_checks = [override["id"] for override in data["override"] if override["ignore"]]
@@ -71,14 +71,14 @@ def check_directory(directory, project_type, is_summary=False):
 
     if score == 5:
         print()
-        print("\033[1mCongratulations on a fantastic healthcheck score \U0001F389\033[0;0m")
+        print("\033[1mCongratulations on a fantastic score \U0001F389\033[0;0m")
 
     print()
 
 
 parser = argparse.ArgumentParser(
-                    prog='healthcheck',
-                    description='A health check for your projects')
+                    prog='japr',
+                    description='A cross-language tool for rating the overall quality of open source, commercial and personal projects')
 
 parser.add_argument('directory', help="the directory to scan")
 parser.add_argument('-s', '--summary', help="prints results in summary form", action='store_true')
