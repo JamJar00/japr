@@ -76,6 +76,7 @@ def check_directory(directory, project_type, is_summary=False):
 
     print()
 
+    return len([result for (result, _) in issues if result.result == Result.FAILED and result.id not in ignored_checks]) == 0
 
 parser = argparse.ArgumentParser(
                     prog='japr',
@@ -86,4 +87,7 @@ parser.add_argument('-s', '--summary', help="prints results in summary form", ac
 parser.add_argument('-t', '--project-type', help="the type of project being scanned", choices=PROJECT_TYPES)
 
 args = parser.parse_args()
-check_directory(args.directory, args.project_type, args.summary)
+if check_directory(args.directory, args.project_type, args.summary):
+    quit(0)
+else:
+    quit(1)

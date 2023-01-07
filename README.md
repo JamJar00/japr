@@ -43,6 +43,11 @@ override:
 ```
 Be aware that the project's score is always calculated against the full ruleset no matter what you suppress so that the score is comparable across projects of the same type.
 
+## Score
+Japr produces a score for each project between 0 and 5 stars. A project with a 5 star score is very commendable.
+
+This score is always calculated against the full ruleset so is comparable between projects of the same type even if they have different suppressions set.
+
 ## Supported Languages
 Japr will work for projects of all languages however there are additional checks for the following:
 - Python
