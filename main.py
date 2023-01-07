@@ -40,14 +40,14 @@ def check_directory(directory, project_type, is_summary=False):
         checks = {check.id: check for check in check_provider.checks()}
 
         results = check_provider.test(directory)
-        issues.extend((result, checks[result.id]) for result in results if result.id not in ignored_checks and project_type in checks[result.id].project_types)
+        issues.extend((result, checks[result.id]) for result in results if project_type in checks[result.id].project_types)
 
     # TODO Group issues by ID for multiple files
 
     print(f"\033[1m{os.path.basename(directory)}\033[0;0m")
     print("=" * 10)
-    for (result, check) in issues:
-        if result.result == Result.FAILED:
+    for (result, check) in issues :
+        if result.result == Result.FAILED and result.id not in ignored_checks:
             severity_color = "\033[1;31m" if check.severity == Severity.HIGH else "\033[1;33m" if check.severity == Severity.MEDIUM else "\033[37m"
             if result.file_path is not None:
                 print(f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m - \033[1m{check.id}\033[0;0m [{result.file_path}] {check.reason}")
@@ -64,10 +64,11 @@ def check_directory(directory, project_type, is_summary=False):
     score = int(5 - sum(check.severity.value for (result, check) in issues if result.result == Result.FAILED or result.result == Result.PRE_REQUISITE_CHECK_FAILED) / sum(check.severity.value for (_, check) in issues) * 5)
     print("\033[1mProject score: " + "\U00002B50" * score + "\033[0;0m (out of 5)")
 
-    passed = len([result for (result, _) in issues if result.result == Result.PASSED])
-    failed = len([result for (result, _) in issues if result.result == Result.FAILED])
-    cannot_run = len([result for (result, _) in issues if result.result == Result.PRE_REQUISITE_CHECK_FAILED])
-    print(f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed: {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}\033[0;0m")
+    passed = len([result for (result, _) in issues if result.result == Result.PASSED and result.id not in ignored_checks])
+    failed = len([result for (result, _) in issues if result.result == Result.FAILED and result.id not in ignored_checks])
+    cannot_run = len([result for (result, _) in issues if result.result == Result.PRE_REQUISITE_CHECK_FAILED and result.id not in ignored_checks])
+    suppressed = len([result for (result, _) in issues if result.id in ignored_checks])
+    print(f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed: {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}, Suppressed {suppressed}\033[0;0m")
 
     if score == 5:
         print()

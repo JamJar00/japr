@@ -41,6 +41,7 @@ override:
   - id: CI001
     ignore: true
 ```
+Be aware that the project's score is always calculated against the full ruleset no matter what you suppress so that the score is comparable across projects of the same type.
 
 ## Supported Languages
 Japr will work for projects of all languages however there are additional checks for the following:
