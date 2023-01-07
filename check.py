@@ -22,9 +22,10 @@ class Check:
 
 
 class CheckResult:
-    def __init__(self, id, result):
+    def __init__(self, id, result, file_path=None):
         self.id = id
         self.result = result
+        self.file_path = file_path
 
 
 class Severity(Enum):

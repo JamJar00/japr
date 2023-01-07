@@ -42,12 +42,17 @@ def check_directory(directory, project_type, is_summary=False):
         results = check_provider.test(directory)
         issues.extend((result, checks[result.id]) for result in results if result.id not in ignored_checks and project_type in checks[result.id].project_types)
 
+    # TODO Group issues by ID for multiple files
+
     print(f"\033[1m{os.path.basename(directory)}\033[0;0m")
     print("=" * 10)
     for (result, check) in issues:
         if result.result == Result.FAILED:
             severity_color = "\033[1;31m" if check.severity == Severity.HIGH else "\033[1;33m" if check.severity == Severity.MEDIUM else "\033[37m"
-            print(f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m - \033[1m{check.id}\033[0;0m {check.reason}")
+            if result.file_path is not None:
+                print(f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m - \033[1m{check.id}\033[0;0m [{result.file_path}] {check.reason}")
+            else:
+                print(f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m - \033[1m{check.id}\033[0;0m {check.reason}")
             if not is_summary:
                 print()
                 print(check.advice)

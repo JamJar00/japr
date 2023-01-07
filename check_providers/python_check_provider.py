@@ -3,8 +3,10 @@ import glob
 import os
 import toml
 
+
 # Sourced from https://github.com/vintasoftware/python-linters-and-code-analysis
 _linters = ["coala-bears", "yala", "prospector", "pylama", "ciocheck", "wemake-python-styleguide", "flake8"]
+
 
 def _extract_dependencies_from_pyproject(directory):
     with open(directory + "/pyproject.toml", "r") as f:
@@ -51,6 +53,7 @@ class PythonCheckProvider(CheckProvider):
         yield CheckResult("PY001", Result.PASSED if not os.path.isfile(directory + "/requirements.txt") else Result.FAILED)
         yield CheckResult("PY002", Result.PASSED if any([os.path.isfile(directory + "/Pipfile"), os.path.isfile(directory + "/pyproject.toml"), os.path.isfile(directory + "/requirements.txt")]) else Result.FAILED)
 
+        # TODO report for all Pipfiles/etc. in a project
         if os.path.isfile(directory + "/pyproject.toml"):
             dependencies = _extract_dependencies_from_pyproject(directory)
         elif os.path.isfile(directory + "/Pipfile"):
@@ -63,26 +66,26 @@ class PythonCheckProvider(CheckProvider):
 
     def checks(self):
         return [
-                Check(
-                    "PY001",
-                    Severity.MEDIUM,
-                    ["open-source", "inner-source", "team", "personal"],
-                    "Python projects should prefer a build system to a requirements.txt",
-                    """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools."""),
+            Check(
+                "PY001",
+                Severity.MEDIUM,
+                ["open-source", "inner-source", "team", "personal"],
+                "Python projects should prefer a build system to a requirements.txt",
+                """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools."""),
 
-                Check(
-                    "PY002",
-                    Severity.LOW,
-                    ["open-source", "inner-source", "team", "personal"],
-                    "Python projects should have a dependency manager",
-                    """Python projects should have some way of tracking dependencies for the project, such as a pyproject.toml with Poetry or a Pipfile, even if they have no dependencies.
+            Check(
+                "PY002",
+                Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
+                "Python projects should have a dependency manager",
+                """Python projects should have some way of tracking dependencies for the project, such as a pyproject.toml with Poetry or a Pipfile, even if they have no dependencies.
 
 Setup a tool like Poetry or pipenv."""),
 
-                Check(
-                    "PY003",
-                    Severity.MEDIUM,
-                    ["open-source", "inner-source", "team"],
-                    "Python projects should have a linter configured",
-                    """Python projects should have a comprehensive linter configured such as Pylama""")
-               ]
+            Check(
+                "PY003",
+                Severity.MEDIUM,
+                ["open-source", "inner-source", "team"],
+                "Python projects should have a linter configured",
+                """Python projects should have a comprehensive linter configured such as Pylama""")
+           ]
