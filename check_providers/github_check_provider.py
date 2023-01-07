@@ -33,8 +33,8 @@ Create a .github/ISSUE_TEMPLATE.md file and fill it with a tempate for users to 
                 Check(
                     "GH002",
                     Severity.LOW,
-                    "GitHub projects should have a pull request template",
                     ["open-source", "inner-source"],
+                    "GitHub projects should have a pull request template",
                     """To help users create pull requests that are useful for you a pull request template is recommended.
 
 Create a .github/PULL_REQUEST_TEMPLATE.md file and fill it with a tempate for users to use when filing pull requests""")

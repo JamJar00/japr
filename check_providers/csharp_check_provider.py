@@ -23,8 +23,7 @@ class CSharpCheckProvider(CheckProvider):
         cs_projects = glob.glob("**/*.csproj", recursive=True, root_dir=directory)
 
         if len(glob.glob('**/*.cs', recursive=True, root_dir=directory)) == 0:
-            for cs_project in cs_projects:
-                yield CheckResult("CS003", Result.NOT_APPLICABLE, cs_project)
+            yield CheckResult("CS003", Result.NOT_APPLICABLE)
 
         for cs_project in cs_projects:
             dependencies = _extract_dependencies_from_csproj(directory + "/" + cs_project)
