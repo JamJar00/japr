@@ -30,6 +30,7 @@ class ReadmeCheckProvider(CheckProvider):
             Check(
                 "RE001",
                 Severity.HIGH,
+                ["open-source", "inner-source", "team", "personal"],
                 "Projects should have a README.md file describing the project and its use",
                 """Create a README.md file in the root of the project and add content to describe to other users (or just your future self) things like:
 - Why does this project exist?
@@ -41,6 +42,7 @@ class ReadmeCheckProvider(CheckProvider):
             Check(
                 "RE002",
                 Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
                 "README.md should contain an Installation section",
                 """To help users (and your future self) install your project/library you should provide an installation section in your README. Add the following to your readme:
 
@@ -51,6 +53,7 @@ class ReadmeCheckProvider(CheckProvider):
             Check(
                 "RE003",
                 Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
                 "README.md should contain a Usage section",
                 """To help users (and your future self) use your project/library you should provide a usage section in your README. Add the following to your readme:
 

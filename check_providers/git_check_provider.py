@@ -23,6 +23,7 @@ class GitCheckProvider(CheckProvider):
             Check(
                 "GI001",
                 Severity.HIGH,
+                ["open-source", "inner-source", "team", "personal"],
                 "Projects should be tracked in Git version control",
                 """All projects, even the smallest personal projects benefit from being tracked in Git as it provides branch management, backups and history to your project.
 
@@ -31,6 +32,7 @@ Run `git init` in this project to setup Git and then make a commit"""),
             Check(
                 "GI002",
                 Severity.HIGH,
+                ["open-source", "inner-source", "team", "personal"],
                 "Projects in Git should have a remote copy in origin",
                 """This project does not have a Git remote named 'origin' which suggests there is no backup copy of the project should it be lost.
 
@@ -42,6 +44,7 @@ git push origin master"""),
             Check(
                 "GI003",
                 Severity.HIGH,
+                ["open-source", "inner-source", "team", "personal"],
                 "Projects in Git should switch from a 'master' branch to a 'main' branch",
                 """This project has a branch named 'master' however it is now recommended to use a branch named 'main' to avoid culturally inappropriate language.
 
@@ -59,6 +62,7 @@ You may also need to make changes in your remote to change the default branch"""
             Check(
                 "GI004",
                 Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
                 "Projects in Git should have a .gitignore file",
                 """.gitignore files help you avoid committing unwanted files into Git such as binaries or build artifacts. You should create a .gitignore file for this project.
 

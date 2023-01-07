@@ -5,7 +5,10 @@ import os
 import yaml
 
 
-def check_directory(directory, is_summary=False):
+PROJECT_TYPES = ["open-source", "inner-source", "team", "personal"]
+
+
+def check_directory(directory, project_type, is_summary=False):
     directory = os.path.abspath(directory)
     if not os.path.isdir(directory):
         print(f"'{directory}' is not a valid directory so cannot be checked")
@@ -18,15 +21,26 @@ def check_directory(directory, is_summary=False):
                 ignored_checks = [override["id"] for override in data["override"] if override["ignore"]]
             except KeyError:
                 ignored_checks = []
+            if project_type is None:
+                try:
+                    project_type = data["projectType"]
+                except KeyError:
+                    project_type = None
     else:
         ignored_checks = []
+
+    if project_type is None:
+        raise Exception("No project type specified")
+
+    if project_type not in PROJECT_TYPES:
+        raise Exception("Invalid project type. Must be one of " + ", ".join(PROJECT_TYPES))
 
     issues = []
     for check_provider in check_providers:
         checks = {check.id: check for check in check_provider.checks()}
 
         results = check_provider.test(directory)
-        issues.extend((result, checks[result.id]) for result in results if result.id not in ignored_checks)
+        issues.extend((result, checks[result.id]) for result in results if result.id not in ignored_checks and project_type in checks[result.id].project_types)
 
     print(f"\033[1m{os.path.basename(directory)}\033[0;0m")
     print("=" * 10)
@@ -61,9 +75,9 @@ parser = argparse.ArgumentParser(
                     prog='healthcheck',
                     description='A health check for your projects')
 
-parser.add_argument('directories', nargs="*", help="a directory to scan")
+parser.add_argument('directory', help="the directory to scan")
 parser.add_argument('-s', '--summary', help="prints results in summary form", action='store_true')
+parser.add_argument('-t', '--project-type', help="the type of project being scanned", choices=PROJECT_TYPES)
 
 args = parser.parse_args()
-for directory in args.directories:
-    check_directory(directory, args.summary)
+check_directory(args.directory, args.project_type, args.summary)

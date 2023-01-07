@@ -13,9 +13,10 @@ class CheckProvider(ABC):
 
 
 class Check:
-    def __init__(self, id, severity, reason, advice):
+    def __init__(self, id, severity, project_types, reason, advice):
         self.id = id
         self.severity = severity
+        self.project_types = project_types
         self.reason = reason
         self.advice = advice
 

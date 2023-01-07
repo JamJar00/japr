@@ -66,12 +66,14 @@ class PythonCheckProvider(CheckProvider):
                 Check(
                     "PY001",
                     Severity.MEDIUM,
+                    ["open-source", "inner-source", "team", "personal"],
                     "Python projects should prefer a build system to a requirements.txt",
                     """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools."""),
 
                 Check(
                     "PY002",
                     Severity.LOW,
+                    ["open-source", "inner-source", "team", "personal"],
                     "Python projects should have a dependency manager",
                     """Python projects should have some way of tracking dependencies for the project, such as a pyproject.toml with Poetry or a Pipfile, even if they have no dependencies.
 
@@ -80,6 +82,7 @@ Setup a tool like Poetry or pipenv."""),
                 Check(
                     "PY003",
                     Severity.MEDIUM,
+                    ["open-source", "inner-source", "team"],
                     "Python projects should have a linter configured",
                     """Python projects should have a comprehensive linter configured such as Pylama""")
                ]

@@ -34,6 +34,7 @@ class CiCheckProvider(CheckProvider):
                 Check(
                     "CI001",
                     Severity.MEDIUM,
+                    ["open-source", "inner-source", "team", "personal"],
                     "Projects should define a CI/CD pipeline to ensure code builds and works correctly",
                     """Consider creating a CI/CD pipeine for this project using a tool like GitHub Actions. A typical CI/CD pipeline should:
 - Lint the code

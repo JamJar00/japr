@@ -24,6 +24,7 @@ class GitHubCheckProvider(CheckProvider):
                 Check(
                     "GH001",
                     Severity.LOW,
+                    ["open-source", "inner-source"],
                     "GitHub projects should have an issue template",
                     """To help users create issues that are useful for you an issue template is recommended.
 
@@ -33,6 +34,7 @@ Create a .github/ISSUE_TEMPLATE.md file and fill it with a tempate for users to 
                     "GH002",
                     Severity.LOW,
                     "GitHub projects should have a pull request template",
+                    ["open-source", "inner-source"],
                     """To help users create pull requests that are useful for you a pull request template is recommended.
 
 Create a .github/PULL_REQUEST_TEMPLATE.md file and fill it with a tempate for users to use when filing pull requests""")
