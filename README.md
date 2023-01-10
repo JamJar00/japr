@@ -1,6 +1,8 @@
 # Jamie's Awesome Project Rater
 A cross-language tool for rating the overall quality of open source, commercial and personal projects
 
+![Screenshot of a report](/screenshot.png)
+
 ## Installation
 TODO
 

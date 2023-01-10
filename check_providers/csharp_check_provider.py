@@ -14,7 +14,6 @@ def _extract_dependencies_from_csproj(file):
     except KeyError:
         dependencies = []
 
-    print(dependencies)
     return set(dependencies)
 
 
