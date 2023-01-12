@@ -61,6 +61,10 @@ Japr will work for projects of all languages however there are additional checks
 - No TODOs anywhere, they should be tracked in issues
 - More languages
 
+#### GitHub
+- Pull request templates/issue templates should have YAML front matter
+- Issue templates should be in the .github folder
+
 #### Python
 - Avoid setup.py/setup.cfg in favour of pyproject.toml?
 
@@ -75,8 +79,8 @@ Japr will work for projects of all languages however there are additional checks
 |----|----------|---------------------------|-------------|--------|
 | CI001 | Severity.MEDIUM | open-source, inner-source, team, personal | Projects should define a CI/CD pipeline to ensure code builds and works correctly | Consider creating a CI/CD pipeine for this project using a tool like GitHub Actions. A typical CI/CD pipeline should:</br>- Lint the code</br>- Build the code</br>- Run all tests</br>- Deploy any built artifacts like NuGet packages/PyPI packages</br></br>If at any point a step fails it should block the build |
 | CS003 | Severity.MEDIUM | open-source, inner-source, team | C# projects should have a linter configured | C# projects should have a comprehensive linter configured such as StyleCop |
-| GH001 | Severity.LOW | open-source, inner-source | GitHub projects should have an issue template | To help users create issues that are useful for you an issue template is recommended.</br></br>Create a .github/ISSUE_TEMPLATE.md file and fill it with a tempate for users to use when filing issues |
-| GH002 | Severity.LOW | open-source, inner-source | GitHub projects should have a pull request template | To help users create pull requests that are useful for you a pull request template is recommended.</br></br>Create a .github/PULL_REQUEST_TEMPLATE.md file and fill it with a tempate for users to use when filing pull requests |
+| GH001 | Severity.LOW | open-source, inner-source | GitHub projects should have an issue template | To help users create issues that are useful for you an issue template is recommended.</br></br>Create a .github/issue_template.md file and fill it with a template for users to use when filing issues.</br>See https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates |
+| GH002 | Severity.LOW | open-source, inner-source | GitHub projects should have a pull request template | To help users create pull requests that are useful for you a pull request template is recommended.</br></br>Create a .github/pull_request_template.md file and fill it with a template for users to use when filing pull requests</br>See https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository |
 | GI001 | Severity.HIGH | open-source, inner-source, team, personal | Projects should be tracked in Git version control | All projects, even the smallest personal projects benefit from being tracked in Git as it provides branch management, backups and history to your project.</br></br>Run `git init` in this project to setup Git and then make a commit |
 | GI002 | Severity.HIGH | open-source, inner-source, team, personal | Projects in Git should have a remote copy in origin | This project does not have a Git remote named 'origin' which suggests there is no backup copy of the project should it be lost.</br></br>Setup a Git repository on your favourite Git service (e.g. GitHub) and follow the instructions to add a remote to an existing project. The instructions will likely look like:</br></br>git remote add origin <your url></br>git push origin master |
 | GI003 | Severity.HIGH | open-source, inner-source, team, personal | Projects in Git should switch from a 'master' branch to a 'main' branch | This project has a branch named 'master' however it is now recommended to use a branch named 'main' to avoid culturally inappropriate language.</br></br>You can switch your primary branch using:</br></br>git checkout master</br>git pull origin master</br>git switch -c main</br>git push origin main</br>git branch -d master</br>git push :master</br></br>You may also need to make changes in your remote to change the default branch |
