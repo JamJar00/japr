@@ -1,0 +1,16 @@
+name: Build
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install poetry
+      - run: poetry install
+      - run: poetry run pylama
