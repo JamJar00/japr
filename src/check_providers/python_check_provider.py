@@ -46,9 +46,14 @@ class PythonCheckProvider(CheckProvider):
         return "Python"
 
     def test(self, directory):
+        requirements_txts = glob.glob('**/requirements.txt', recursive=True, root_dir=directory)
         pyproject_tomls = glob.glob('**/pyproject.toml', recursive=True, root_dir=directory)
         pipfiles = glob.glob('**/Pipfile', recursive=True, root_dir=directory)
-        requirements_txts = glob.glob('**/requirements.txt', recursive=True, root_dir=directory)
+
+        for requirements_txt in requirements_txts:
+            yield CheckResult("PY001", Result.FAILED, requirements_txt)
+        else:
+            yield CheckResult("PY001", Result.NOT_APPLICABLE)
 
         if len(pyproject_tomls) != 0 or len(pipfiles) != 0:
             for pyproject_toml in pyproject_tomls:
@@ -60,11 +65,6 @@ class PythonCheckProvider(CheckProvider):
                 yield CheckResult("PY002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, pipfile)
         else:
             yield CheckResult("PY002", Result.NOT_APPLICABLE)
-
-        for requirements_txt in requirements_txts:
-            yield CheckResult("PY001", Result.FAILED, requirements_txt)
-        else:
-            yield CheckResult("PY001", Result.NOT_APPLICABLE)
 
     def checks(self):
         return [

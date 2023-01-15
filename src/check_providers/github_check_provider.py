@@ -14,7 +14,7 @@ class GitHubCheckProvider(CheckProvider):
         except InvalidGitRepositoryError:
             github_is_origin = False
 
-        if not os.path.isdir(".github") and not github_is_origin:
+        if not github_is_origin:
             yield CheckResult("GH001", Result.NOT_APPLICABLE)
             yield CheckResult("GH002", Result.NOT_APPLICABLE)
             return

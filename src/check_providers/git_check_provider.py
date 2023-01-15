@@ -17,11 +17,11 @@ class GitCheckProvider(CheckProvider):
             yield CheckResult("GI004", Result.PASSED if os.path.isfile(directory + "/.gitignore") else Result.FAILED)
 
             ds_store_paths = [f.path for f in repo.tree("HEAD").list_traverse() if f.type == "blob" and f.name == ".DS_Store"]
-            if len(ds_store_paths) == 0:
-                yield CheckResult("GI005", Result.PASSED)
+            for ds_store_path in ds_store_paths:
+                yield CheckResult("GI005", Result.FAILED, ds_store_path)
             else:
-                for ds_store_path in ds_store_paths:
-                    yield CheckResult("GI005", Result.FAILED, ds_store_path)
+                yield CheckResult("GI005", Result.PASSED)
+
         except InvalidGitRepositoryError:
             yield CheckResult("GI001", Result.FAILED)
             yield CheckResult("GI002", Result.PRE_REQUISITE_CHECK_FAILED)

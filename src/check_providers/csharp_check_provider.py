@@ -24,13 +24,12 @@ class CSharpCheckProvider(CheckProvider):
     def test(self, directory):
         cs_projects = glob.glob("**/*.csproj", recursive=True, root_dir=directory)
 
-        if len(glob.glob('**/*.cs', recursive=True, root_dir=directory)) == 0:
-            yield CheckResult("CS002", Result.NOT_APPLICABLE)
-
         for cs_project in cs_projects:
             dependencies = _extract_dependencies_from_csproj(directory + "/" + cs_project)
             # TODO support EnableNetAnalyzers property
             yield CheckResult("CS002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, cs_project)
+        else:
+            yield CheckResult("CS002", Result.NOT_APPLICABLE)
 
     def checks(self):
         return [
