@@ -2,33 +2,32 @@ from check import Check, CheckProvider, CheckResult, Result, Severity
 import os
 
 
+CI_PATHS = [
+        "/.gitlab-ci.yml",
+        "/.travis.yml",
+        "/appveyor.yml",
+        "/.appveyor.yml",
+        "/circle.yml",
+        "/.circleci/config.yml",
+        "/Jenkinsfile",
+        "/.drone.yml",
+        "/azure-pipelines.yml",
+        "/bitbucket-pipelines.yml",
+        "/.buildkite/pipeline.yml"
+    ]
+
 class CiCheckProvider(CheckProvider):
     def name(self):
         return "CI"
 
     def test(self, directory):
-        if os.path.isfile(directory + "/.gitlab-ci.yml"):
-            ci_path = directory + "/.gitlab-ci.yml"
-        elif os.path.isfile(directory + "/.travis.yml"):
-            ci_path = directory + "/travis.yml"
-        elif os.path.isfile(directory + "/appveyor.yml"):
-            ci_path = directory + "/appveyor.yml"
-        elif os.path.isfile(directory + "/.appveyor.yml"):
-            ci_path = directory + "/.appveyor.yml"
-        elif os.path.isfile(directory + "/circle.yml"):
-            ci_path = directory + "/circle.yml"
-        elif os.path.isfile(directory + "/.circleci/config.yml"):
-            ci_path = directory + "/.circleci/config.yml"
-        elif os.path.isfile(directory + "/Jenkinsfile"):
-            ci_path = directory + "/Jenkinsfile"
-        elif os.path.isfile(directory + "/.drone.yml"):
-            ci_path = directory + "/.drone.yml"
-        elif os.path.isdir(directory + "/.github/workflows/"):
-            ci_path = directory + "/.github/workflows/"
-        elif os.path.isfile(directory + "/azure-pipelines.yml"):
-            ci_path = directory + "/azure-pipelines.yml"
+        ci_path = None
+        for path in CI_PATHS:
+            if os.path.isfile(directory + path):
+                ci_path = directory + path
         else:
-            ci_path = None
+            if os.path.isdir(directory + "/.github/workflows/"):
+                ci_path = directory + "/.buildkite/pipeline.yml"
 
         yield CheckResult("CI001", Result.PASSED if ci_path is not None else Result.FAILED)
 
