@@ -60,6 +60,7 @@ Japr will work for projects of all languages however there are additional checks
 - Check lock files are checked into Git
 - No TODOs anywhere, they should be tracked in issues
 - More languages
+- No .DS_store files
 
 #### GitHub
 - Pull request templates/issue templates should have YAML front matter
@@ -67,6 +68,8 @@ Japr will work for projects of all languages however there are additional checks
 
 #### Python
 - Avoid setup.py/setup.cfg in favour of pyproject.toml?
+- Remove dependency manager check
+- Should have unit test library?
 
 #### Sketchy Ideas
 - Has link in readme to Docker Hub if it has a Docker artifact

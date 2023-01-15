@@ -1,6 +1,5 @@
 from check import Check, CheckProvider, CheckResult, Result, Severity
 import glob
-import os
 import toml
 
 
@@ -8,8 +7,8 @@ import toml
 _linters = ["coala-bears", "yala", "prospector", "pylama", "ciocheck", "wemake-python-styleguide", "flake8"]
 
 
-def _extract_dependencies_from_pyproject(directory):
-    with open(directory + "/pyproject.toml", "r") as f:
+def _extract_dependencies_from_pyproject(path):
+    with open(path, "r") as f:
         data = toml.load(f)
 
         try:
@@ -25,8 +24,8 @@ def _extract_dependencies_from_pyproject(directory):
         return set(dependencies).union(set(dev_dependencies))
 
 
-def _extract_dependencies_from_pipfile(directory):
-    with open(directory + "/Pipfile", "r") as f:
+def _extract_dependencies_from_pipfile(path):
+    with open(path, "r") as f:
         data = toml.load(f)
 
         try:
@@ -43,26 +42,30 @@ def _extract_dependencies_from_pipfile(directory):
 
 
 class PythonCheckProvider(CheckProvider):
-    def test(self, directory):
-        if len(glob.glob('**/*.py', recursive=True, root_dir=directory)) == 0:
-            yield CheckResult("PY001", Result.NOT_APPLICABLE)
-            yield CheckResult("PY002", Result.NOT_APPLICABLE)
-            yield CheckResult("PY003", Result.NOT_APPLICABLE)
-            return
-        
-        yield CheckResult("PY001", Result.PASSED if not os.path.isfile(directory + "/requirements.txt") else Result.FAILED)
-        yield CheckResult("PY002", Result.PASSED if any([os.path.isfile(directory + "/Pipfile"), os.path.isfile(directory + "/pyproject.toml"), os.path.isfile(directory + "/requirements.txt")]) else Result.FAILED)
+    def name(self):
+        return "Python"
 
-        # TODO report for all Pipfiles/etc. in a project
-        if os.path.isfile(directory + "/pyproject.toml"):
-            dependencies = _extract_dependencies_from_pyproject(directory)
-        elif os.path.isfile(directory + "/Pipfile"):
-            dependencies = _extract_dependencies_from_pipfile(directory)
-        # elif os.path.isfile(directory + "/requirements.txt"):
-        #     dependencies = _extract_dependencies_from_requirements(directory)
+    def test(self, directory):
+        pyproject_tomls = glob.glob('**/pyproject.toml', recursive=True, root_dir=directory)
+        pipfiles = glob.glob('**/Pipfile', recursive=True, root_dir=directory)
+        requirements_txts = glob.glob('**/requirements.txt', recursive=True, root_dir=directory)
+
+        if len(pyproject_tomls) == 0 and len(pipfiles) == 0:
+            yield CheckResult("PY002", Result.NOT_APPLICABLE)
+        else: 
+            for pyproject_toml in pyproject_tomls:
+                dependencies = _extract_dependencies_from_pyproject(directory + "/" + pyproject_toml)
+                yield CheckResult("PY002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, pyproject_toml)
+
+            for pipfile in pipfiles:
+                dependencies = _extract_dependencies_from_pipfile(directory + "/" + pipfile)
+                yield CheckResult("PY002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, pipfile)
+
+        if len(requirements_txts) == 0:
+            yield CheckResult("PY001", Result.NOT_APPLICABLE)
         else:
-            dependencies = []
-        yield CheckResult("PY003", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED)
+            for requirements_txt in requirements_txts:
+                yield CheckResult("PY001", Result.FAILED, requirements_txt)
 
     def checks(self):
         return [
@@ -75,15 +78,6 @@ class PythonCheckProvider(CheckProvider):
 
             Check(
                 "PY002",
-                Severity.LOW,
-                ["open-source", "inner-source", "team", "personal"],
-                "Python projects should have a dependency manager",
-                """Python projects should have some way of tracking dependencies for the project, such as a pyproject.toml with Poetry or a Pipfile, even if they have no dependencies.
-
-Setup a tool like Poetry or pipenv."""),
-
-            Check(
-                "PY003",
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "Python projects should have a linter configured",

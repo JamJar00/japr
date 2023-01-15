@@ -3,6 +3,8 @@ import os
 
 
 class ReadmeCheckProvider(CheckProvider):
+    def name(self):
+        return "Readme"
     def test(self, directory):
         if os.path.isfile(directory + "/README.md"):
             readme_path = directory + "/README.md"

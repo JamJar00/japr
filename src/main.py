@@ -46,8 +46,11 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
         start = time.time()
         for result in results:
             end = time.time()
-            if project_type in checks[result.id].project_types:
-                issues.append((result, checks[result.id], end - start))
+            try:
+                if project_type in checks[result.id].project_types:
+                    issues.append((result, checks[result.id], end - start))
+            except KeyError as e:
+                raise Exception(f"Check {result.id} is not defined in the {check_provider.name()} check provider but a result was returned for it. Ensure the result is returning the correct ID and the check is defined correctly in the provider.")
             start = time.time()
 
     # TODO Group issues by ID for multiple files

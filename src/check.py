@@ -4,6 +4,10 @@ from enum import Enum
 
 class CheckProvider(ABC):
     @abstractmethod
+    def name(self):
+        pass
+
+    @abstractmethod
     def test(self, directory):
         pass
 

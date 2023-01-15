@@ -4,6 +4,9 @@ import os
 
 
 class GitHubCheckProvider(CheckProvider):
+    def name(self):
+        return "GitHub"
+
     def test(self, directory):
         try:
             repo = Repo(directory)

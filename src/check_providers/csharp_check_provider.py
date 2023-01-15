@@ -18,21 +18,24 @@ def _extract_dependencies_from_csproj(file):
 
 
 class CSharpCheckProvider(CheckProvider):
+    def name(self):
+        return "C#"
+
     def test(self, directory):
         cs_projects = glob.glob("**/*.csproj", recursive=True, root_dir=directory)
 
         if len(glob.glob('**/*.cs', recursive=True, root_dir=directory)) == 0:
-            yield CheckResult("CS003", Result.NOT_APPLICABLE)
+            yield CheckResult("CS002", Result.NOT_APPLICABLE)
 
         for cs_project in cs_projects:
             dependencies = _extract_dependencies_from_csproj(directory + "/" + cs_project)
             # TODO support EnableNetAnalyzers property
-            yield CheckResult("CS003", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, cs_project)
+            yield CheckResult("CS002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, cs_project)
 
     def checks(self):
         return [
             Check(
-                "CS003",
+                "CS002",
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "C# projects should have a linter configured",

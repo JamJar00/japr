@@ -3,6 +3,9 @@ import os
 
 
 class LicenseCheckProvider(CheckProvider):
+    def name(self):
+        return "License"
+
     def test(self, directory):
         yield CheckResult("LI001", Result.PASSED if any([os.path.isfile(directory + "/LICENSE.md"), os.path.isfile(directory + "/LICENSE"), os.path.isfile(directory + "/LICENSE.txt")]) else Result.FAILED)
 

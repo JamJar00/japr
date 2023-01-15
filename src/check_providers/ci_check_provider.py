@@ -3,6 +3,9 @@ import os
 
 
 class CiCheckProvider(CheckProvider):
+    def name(self):
+        return "CI"
+
     def test(self, directory):
         if os.path.isfile(directory + "/.gitlab-ci.yml"):
             ci_path = directory + "/.gitlab-ci.yml"
