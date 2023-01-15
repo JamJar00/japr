@@ -15,11 +15,19 @@ class GitCheckProvider(CheckProvider):
             yield CheckResult("GI002", Result.PASSED if "origin" in repo.remotes else Result.FAILED)
             yield CheckResult("GI003", Result.PASSED if "master" not in repo.heads else Result.FAILED)
             yield CheckResult("GI004", Result.PASSED if os.path.isfile(directory + "/.gitignore") else Result.FAILED)
+
+            ds_store_paths = [f.path for f in repo.tree("HEAD").list_traverse() if f.name == ".DS_Store"]
+            if len(ds_store_paths) == 0:
+                yield CheckResult("GI005", Result.PASSED)
+            else:
+                for ds_store_path in ds_store_paths:
+                    yield CheckResult("GI005", Result.FAILED, ds_store_path)
         except InvalidGitRepositoryError:
             yield CheckResult("GI001", Result.FAILED)
             yield CheckResult("GI002", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI003", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI004", Result.PRE_REQUISITE_CHECK_FAILED)
+            yield CheckResult("GI005", Result.PRE_REQUISITE_CHECK_FAILED)
 
     def checks(self):
         return [
@@ -69,5 +77,20 @@ You may also need to make changes in your remote to change the default branch"""
                 "Projects in Git should have a .gitignore file",
                 """.gitignore files help you avoid committing unwanted files into Git such as binaries or build artifacts. You should create a .gitignore file for this project.
 
-You can find comprehensive examples for your chosen language here https://github.com/github/gitignore""")
+You can find comprehensive examples for your chosen language here https://github.com/github/gitignore"""),
+
+            Check(
+                "GI005",
+                Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
+                "Avoid committing .DS_store files",
+                """.DS_store files are OSX metadata files in a proprietary binary format. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.
+
+You can tell git to ignore them from commits by adding them to your .gitignore.
+
+You can also all them to your global .gitignore to avoid ever committing them in any repository. Configure a global .gitignore using the following:
+git config --global core.excludesfile ~/.gitignore
+
+To remove one from the current repository you can use:
+git rm --cached ./path/to/.DS_Store""")
         ]
