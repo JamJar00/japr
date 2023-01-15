@@ -16,7 +16,7 @@ class GitCheckProvider(CheckProvider):
             yield CheckResult("GI003", Result.PASSED if "master" not in repo.heads else Result.FAILED)
             yield CheckResult("GI004", Result.PASSED if os.path.isfile(directory + "/.gitignore") else Result.FAILED)
 
-            ds_store_paths = [f.path for f in repo.tree("HEAD").list_traverse() if f.name == ".DS_Store"]
+            ds_store_paths = [f.path for f in repo.tree("HEAD").list_traverse() if f.type == "blob" and f.name == ".DS_Store"]
             if len(ds_store_paths) == 0:
                 yield CheckResult("GI005", Result.PASSED)
             else:
