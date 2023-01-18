@@ -71,13 +71,10 @@ Japr will work for projects of all languages however there are additional checks
 - Pull request templates/issue templates should have YAML front matter
 - Issue templates should be in the .github folder
 
-#### Python
-- Avoid setup.py/setup.cfg in favour of pyproject.toml?
-
 #### Sketchy Ideas
-- Has link in readme to Docker Hub if it has a Docker artifact
 - Has git tags for versions?
   - Versions in project files match latest git tag
+    - Might need thought for cases where the version has been bumped but the tag hasn't been pushed yet
 - Integrate with GitHub?
 
 ## Rules
@@ -95,6 +92,7 @@ Japr will work for projects of all languages however there are additional checks
 | LI001 | Severity.MEDIUM | open-source, personal | Projects should have a LICENSE.md file describing how the project can be used | Create a LICENSE.md file in the root of the project and add content to describe to other users how this project can be used</br></br>If you are not familiar with the difference licenses available to you, try https://choosealicense.com which guides you through the choice. |
 | PY001 | Severity.MEDIUM | open-source, inner-source, team, personal | Python projects should prefer a build system to a requirements.txt | Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools. |
 | PY002 | Severity.MEDIUM | open-source, inner-source, team | Python projects should have a linter configured | Python projects should have a comprehensive linter configured such as Pylama |
+| PY003 | Severity.MEDIUM | open-source, inner-source, team, personal | Python projects should prefer a build system to setup.py/setup.cfg | Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a setup.py or setup.cfg file to one of these tools. |
 | RE001 | Severity.HIGH | open-source, inner-source, team, personal | Projects should have a README.md file describing the project and its use | Create a README.md file in the root of the project and add content to describe to other users (or just your future self) things like:</br>- Why does this project exist?</br>- How do I install it?</br>- How do I use it?</br>- What configuration can be set?</br>- How do I build the source code? |
 | RE002 | Severity.LOW | open-source, inner-source, team, personal | README.md should contain an Installation section | To help users (and your future self) install your project/library you should provide an installation section in your README. Add the following to your readme:</br></br>## Installation</br>1. Do this</br>2. Now do this |
 | RE003 | Severity.LOW | open-source, inner-source, team, personal | README.md should contain a Usage section | To help users (and your future self) use your project/library you should provide a usage section in your README. Add the following to your readme:</br></br>## Usage</br>To do this thing:</br>1. Do this</br>2. Then run this |

@@ -64,6 +64,8 @@ class PythonCheckProvider(CheckProvider):
             "**/pyproject.toml", recursive=True, root_dir=directory
         )
         pipfiles = glob.glob("**/Pipfile", recursive=True, root_dir=directory)
+        setup_pys = glob.glob("**/setup.py", recursive=True, root_dir=directory)
+        setup_cfgs = glob.glob("**/setup.cfg", recursive=True, root_dir=directory)
 
         for requirements_txt in requirements_txts:
             yield CheckResult("PY001", Result.FAILED, requirements_txt)
@@ -97,6 +99,14 @@ class PythonCheckProvider(CheckProvider):
         else:
             yield CheckResult("PY002", Result.NOT_APPLICABLE)
 
+        if len(setup_pys) != 0 or len(setup_cfgs) != 0:
+            for setup_py in setup_pys:
+                yield CheckResult("PY003", Result.FAILED, setup_py)
+            for setup_cfg in setup_cfgs:
+                yield CheckResult("PY003", Result.FAILED, setup_cfg)
+        else:
+            yield CheckResult("PY001", Result.NOT_APPLICABLE)
+
     def checks(self):
         return [
             Check(
@@ -112,5 +122,12 @@ class PythonCheckProvider(CheckProvider):
                 ["open-source", "inner-source", "team"],
                 "Python projects should have a linter configured",
                 """Python projects should have a comprehensive linter configured such as Pylama""",
+            ),
+            Check(
+                "PY003",
+                Severity.MEDIUM,
+                ["open-source", "inner-source", "team", "personal"],
+                "Python projects should prefer a build system to setup.py/setup.cfg",
+                """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a setup.py or setup.cfg file to one of these tools.""",
             ),
         ]
