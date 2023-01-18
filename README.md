@@ -57,6 +57,10 @@ Japr will work for projects of all languages however there are additional checks
 
 ## TODO
 - Support code blocks in the advice section
+- Fix linting
+- Deploy to Docker Hub
+- Deploy to PyPi
+- Tests, always need ~more~ tests
 
 ### Checks
 - Check lock files are checked into Git
@@ -69,8 +73,6 @@ Japr will work for projects of all languages however there are additional checks
 
 #### Python
 - Avoid setup.py/setup.cfg in favour of pyproject.toml?
-- Remove dependency manager check
-- Should have unit test library?
 
 #### Sketchy Ideas
 - Has link in readme to Docker Hub if it has a Docker artifact

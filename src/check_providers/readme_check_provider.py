@@ -21,8 +21,8 @@ class ReadmeCheckProvider(CheckProvider):
             with open(readme_path, 'r') as readme_file:
                 content = readme_file.read()
 
-            yield CheckResult("RE002", Result.PASSED if content.find("# Installation") != -1 or content.find("# Setup") != -1 else Result.FAILED)
-            yield CheckResult("RE003", Result.PASSED if content.find("# Usage") != -1 else Result.FAILED)
+            yield CheckResult("RE002", Result.PASSED if content.find("# Install") != -1 or content.find("# Setup") != -1 or content.find("# Getting Started") != -1 or content.find("# Quickstart") != -1 else Result.FAILED)
+            yield CheckResult("RE003", Result.PASSED if content.find("# Usage") != -1 or content.find("# How-to") != -1 or content.find("# API") != -1 else Result.FAILED)
         else:
             yield CheckResult("RE002", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("RE003", Result.PRE_REQUISITE_CHECK_FAILED)
