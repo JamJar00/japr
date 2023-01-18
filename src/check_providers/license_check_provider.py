@@ -7,16 +7,31 @@ class LicenseCheckProvider(CheckProvider):
         return "License"
 
     def test(self, directory):
-        yield CheckResult("LI001", Result.PASSED if any([os.path.isfile(directory + "/LICENSE.md"), os.path.isfile(directory + "/LICENSE"), os.path.isfile(directory + "/LICENSE.txt")]) else Result.FAILED)
+        yield CheckResult(
+            "LI001",
+            Result.PASSED
+            if any(
+                [
+                    os.path.isfile(directory + "/LICENSE.md"),
+                    os.path.isfile(directory + "/LICENSE"),
+                    os.path.isfile(directory + "/LICENSE.txt"),
+                ]
+            )
+            else Result.FAILED,
+        )
 
     def checks(self):
         return [
-                Check(
-                    "LI001",
-                    Severity.MEDIUM,
-                    ["open-source", "personal"],
-                    "Projects should have a LICENSE.md file describing how the project can be used",
-                    """Create a LICENSE.md file in the root of the project and add content to describe to other users how this project can be used
+            Check(
+                "LI001",
+                Severity.MEDIUM,
+                ["open-source", "personal"],
+                (
+                    "Projects should have a LICENSE.md file describing how the project"
+                    " can be used"
+                ),
+                """Create a LICENSE.md file in the root of the project and add content to describe to other users how this project can be used
 
-If you are not familiar with the difference licenses available to you, try https://choosealicense.com which guides you through the choice.""")
-               ]
+If you are not familiar with the difference licenses available to you, try https://choosealicense.com which guides you through the choice.""",
+            )
+        ]

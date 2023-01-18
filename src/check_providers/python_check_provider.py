@@ -4,7 +4,16 @@ import toml
 
 
 # Sourced from https://github.com/vintasoftware/python-linters-and-code-analysis
-_linters = ["coala-bears", "yala", "prospector", "pylama", "ciocheck", "wemake-python-styleguide", "flake8"]
+_linters = [
+    "coala-bears",
+    "yala",
+    "prospector",
+    "pylama",
+    "ciocheck",
+    "wemake-python-styleguide",
+    "flake8",
+    "black",
+]
 
 
 def _extract_dependencies_from_pyproject(path):
@@ -17,7 +26,9 @@ def _extract_dependencies_from_pyproject(path):
             dependencies = []
 
         try:
-            dev_dependencies = data["tool"]["poetry"]["group"]["dev"]["dependencies"].keys()
+            dev_dependencies = data["tool"]["poetry"]["group"]["dev"][
+                "dependencies"
+            ].keys()
         except KeyError:
             dev_dependencies = []
 
@@ -46,9 +57,13 @@ class PythonCheckProvider(CheckProvider):
         return "Python"
 
     def test(self, directory):
-        requirements_txts = glob.glob('**/requirements.txt', recursive=True, root_dir=directory)
-        pyproject_tomls = glob.glob('**/pyproject.toml', recursive=True, root_dir=directory)
-        pipfiles = glob.glob('**/Pipfile', recursive=True, root_dir=directory)
+        requirements_txts = glob.glob(
+            "**/requirements.txt", recursive=True, root_dir=directory
+        )
+        pyproject_tomls = glob.glob(
+            "**/pyproject.toml", recursive=True, root_dir=directory
+        )
+        pipfiles = glob.glob("**/Pipfile", recursive=True, root_dir=directory)
 
         for requirements_txt in requirements_txts:
             yield CheckResult("PY001", Result.FAILED, requirements_txt)
@@ -57,12 +72,28 @@ class PythonCheckProvider(CheckProvider):
 
         if len(pyproject_tomls) != 0 or len(pipfiles) != 0:
             for pyproject_toml in pyproject_tomls:
-                dependencies = _extract_dependencies_from_pyproject(directory + "/" + pyproject_toml)
-                yield CheckResult("PY002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, pyproject_toml)
+                dependencies = _extract_dependencies_from_pyproject(
+                    directory + "/" + pyproject_toml
+                )
+                yield CheckResult(
+                    "PY002",
+                    Result.PASSED
+                    if len(set(_linters).intersection(dependencies))
+                    else Result.FAILED,
+                    pyproject_toml,
+                )
 
             for pipfile in pipfiles:
-                dependencies = _extract_dependencies_from_pipfile(directory + "/" + pipfile)
-                yield CheckResult("PY002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, pipfile)
+                dependencies = _extract_dependencies_from_pipfile(
+                    directory + "/" + pipfile
+                )
+                yield CheckResult(
+                    "PY002",
+                    Result.PASSED
+                    if len(set(_linters).intersection(dependencies))
+                    else Result.FAILED,
+                    pipfile,
+                )
         else:
             yield CheckResult("PY002", Result.NOT_APPLICABLE)
 
@@ -73,12 +104,13 @@ class PythonCheckProvider(CheckProvider):
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team", "personal"],
                 "Python projects should prefer a build system to a requirements.txt",
-                """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools."""),
-
+                """Python is moving towards using more intelligent build systems like Poetry or pipenv to manage dependencies. Consider switching from a requirements.txt file to one of these tools.""",
+            ),
             Check(
                 "PY002",
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "Python projects should have a linter configured",
-                """Python projects should have a comprehensive linter configured such as Pylama""")
-           ]
+                """Python projects should have a comprehensive linter configured such as Pylama""",
+            ),
+        ]

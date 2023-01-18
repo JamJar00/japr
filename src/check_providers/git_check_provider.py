@@ -12,11 +12,24 @@ class GitCheckProvider(CheckProvider):
             repo = Repo(directory)
             yield CheckResult("GI001", Result.PASSED)
 
-            yield CheckResult("GI002", Result.PASSED if "origin" in repo.remotes else Result.FAILED)
-            yield CheckResult("GI003", Result.PASSED if "master" not in repo.heads else Result.FAILED)
-            yield CheckResult("GI004", Result.PASSED if os.path.isfile(directory + "/.gitignore") else Result.FAILED)
+            yield CheckResult(
+                "GI002", Result.PASSED if "origin" in repo.remotes else Result.FAILED
+            )
+            yield CheckResult(
+                "GI003", Result.PASSED if "master" not in repo.heads else Result.FAILED
+            )
+            yield CheckResult(
+                "GI004",
+                Result.PASSED
+                if os.path.isfile(directory + "/.gitignore")
+                else Result.FAILED,
+            )
 
-            ds_store_paths = [f.path for f in repo.tree("HEAD").list_traverse() if f.type == "blob" and f.name == ".DS_Store"]
+            ds_store_paths = [
+                f.path
+                for f in repo.tree("HEAD").list_traverse()
+                if f.type == "blob" and f.name == ".DS_Store"
+            ]
             for ds_store_path in ds_store_paths:
                 yield CheckResult("GI005", Result.FAILED, ds_store_path)
             else:
@@ -38,8 +51,8 @@ class GitCheckProvider(CheckProvider):
                 "Projects should be tracked in Git version control",
                 """All projects, even the smallest personal projects benefit from being tracked in Git as it provides branch management, backups and history to your project.
 
-Run `git init` in this project to setup Git and then make a commit"""),
-
+Run `git init` in this project to setup Git and then make a commit""",
+            ),
             Check(
                 "GI002",
                 Severity.HIGH,
@@ -50,13 +63,16 @@ Run `git init` in this project to setup Git and then make a commit"""),
 Setup a Git repository on your favourite Git service (e.g. GitHub) and follow the instructions to add a remote to an existing project. The instructions will likely look like:
 
 git remote add origin <your url>
-git push origin master"""),
-
+git push origin master""",
+            ),
             Check(
                 "GI003",
                 Severity.HIGH,
                 ["open-source", "inner-source", "team", "personal"],
-                "Projects in Git should switch from a 'master' branch to a 'main' branch",
+                (
+                    "Projects in Git should switch from a 'master' branch to a 'main'"
+                    " branch"
+                ),
                 """This project has a branch named 'master' however it is now recommended to use a branch named 'main' to avoid culturally inappropriate language.
 
 You can switch your primary branch using:
@@ -68,8 +84,8 @@ git push origin main
 git branch -d master
 git push :master
 
-You may also need to make changes in your remote to change the default branch"""),
-
+You may also need to make changes in your remote to change the default branch""",
+            ),
             Check(
                 "GI004",
                 Severity.LOW,
@@ -77,8 +93,8 @@ You may also need to make changes in your remote to change the default branch"""
                 "Projects in Git should have a .gitignore file",
                 """.gitignore files help you avoid committing unwanted files into Git such as binaries or build artifacts. You should create a .gitignore file for this project.
 
-You can find comprehensive examples for your chosen language here https://github.com/github/gitignore"""),
-
+You can find comprehensive examples for your chosen language here https://github.com/github/gitignore""",
+            ),
             Check(
                 "GI005",
                 Severity.LOW,
@@ -92,5 +108,6 @@ You can also all them to your global .gitignore to avoid ever committing them in
 git config --global core.excludesfile ~/.gitignore
 
 To remove one from the current repository you can use:
-git rm --cached ./path/to/.DS_Store""")
+git rm --cached ./path/to/.DS_Store""",
+            ),
         ]

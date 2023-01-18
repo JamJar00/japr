@@ -5,6 +5,7 @@ import os
 class ReadmeCheckProvider(CheckProvider):
     def name(self):
         return "Readme"
+
     def test(self, directory):
         if os.path.isfile(directory + "/README.md"):
             readme_path = directory + "/README.md"
@@ -15,14 +16,31 @@ class ReadmeCheckProvider(CheckProvider):
         else:
             readme_path = None
 
-        yield CheckResult("RE001", Result.PASSED if readme_path is not None else Result.FAILED)
+        yield CheckResult(
+            "RE001", Result.PASSED if readme_path is not None else Result.FAILED
+        )
 
         if readme_path is not None:
-            with open(readme_path, 'r') as readme_file:
+            with open(readme_path, "r") as readme_file:
                 content = readme_file.read()
 
-            yield CheckResult("RE002", Result.PASSED if content.find("# Install") != -1 or content.find("# Setup") != -1 or content.find("# Getting Started") != -1 or content.find("# Quickstart") != -1 else Result.FAILED)
-            yield CheckResult("RE003", Result.PASSED if content.find("# Usage") != -1 or content.find("# How-to") != -1 or content.find("# API") != -1 else Result.FAILED)
+            yield CheckResult(
+                "RE002",
+                Result.PASSED
+                if content.find("# Install") != -1
+                or content.find("# Setup") != -1
+                or content.find("# Getting Started") != -1
+                or content.find("# Quickstart") != -1
+                else Result.FAILED,
+            )
+            yield CheckResult(
+                "RE003",
+                Result.PASSED
+                if content.find("# Usage") != -1
+                or content.find("# How-to") != -1
+                or content.find("# API") != -1
+                else Result.FAILED,
+            )
         else:
             yield CheckResult("RE002", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("RE003", Result.PRE_REQUISITE_CHECK_FAILED)
@@ -33,14 +51,17 @@ class ReadmeCheckProvider(CheckProvider):
                 "RE001",
                 Severity.HIGH,
                 ["open-source", "inner-source", "team", "personal"],
-                "Projects should have a README.md file describing the project and its use",
+                (
+                    "Projects should have a README.md file describing the project and"
+                    " its use"
+                ),
                 """Create a README.md file in the root of the project and add content to describe to other users (or just your future self) things like:
 - Why does this project exist?
 - How do I install it?
 - How do I use it?
 - What configuration can be set?
-- How do I build the source code?"""),
-
+- How do I build the source code?""",
+            ),
             Check(
                 "RE002",
                 Severity.LOW,
@@ -50,8 +71,8 @@ class ReadmeCheckProvider(CheckProvider):
 
 ## Installation
 1. Do this
-2. Now do this"""),
-
+2. Now do this""",
+            ),
             Check(
                 "RE003",
                 Severity.LOW,
@@ -62,5 +83,6 @@ class ReadmeCheckProvider(CheckProvider):
 ## Usage
 To do this thing:
 1. Do this
-2. Then run this""")
+2. Then run this""",
+            ),
         ]

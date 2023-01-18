@@ -3,14 +3,24 @@ import glob
 import xml.etree.ElementTree as ET
 
 
-_linters = ["StyleCop.Analyzers", "SonarAnalyzer.CSharp", "Microsoft.CodeAnalysis.NetAnalyzers", "Roslynator.Analyzers", "Roslynator.CodeAnalysis.Analyzers", "Roslynator.Formatting.Analyzers"]
+_linters = [
+    "StyleCop.Analyzers",
+    "SonarAnalyzer.CSharp",
+    "Microsoft.CodeAnalysis.NetAnalyzers",
+    "Roslynator.Analyzers",
+    "Roslynator.CodeAnalysis.Analyzers",
+    "Roslynator.Formatting.Analyzers",
+]
 
 
 def _extract_dependencies_from_csproj(file):
     data = ET.parse(file)
 
     try:
-        dependencies = [reference.get("Include") for reference in data.findall("/ItemGroup/PackageReference")]
+        dependencies = [
+            reference.get("Include")
+            for reference in data.findall("/ItemGroup/PackageReference")
+        ]
     except KeyError:
         dependencies = []
 
@@ -25,9 +35,17 @@ class CSharpCheckProvider(CheckProvider):
         cs_projects = glob.glob("**/*.csproj", recursive=True, root_dir=directory)
 
         for cs_project in cs_projects:
-            dependencies = _extract_dependencies_from_csproj(directory + "/" + cs_project)
+            dependencies = _extract_dependencies_from_csproj(
+                directory + "/" + cs_project
+            )
             # TODO support EnableNetAnalyzers property
-            yield CheckResult("CS002", Result.PASSED if len(set(_linters).intersection(dependencies)) else Result.FAILED, cs_project)
+            yield CheckResult(
+                "CS002",
+                Result.PASSED
+                if len(set(_linters).intersection(dependencies))
+                else Result.FAILED,
+                cs_project,
+            )
         else:
             yield CheckResult("CS002", Result.NOT_APPLICABLE)
 
@@ -38,5 +56,6 @@ class CSharpCheckProvider(CheckProvider):
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "C# projects should have a linter configured",
-                """C# projects should have a comprehensive linter configured such as StyleCop""")
-           ]
+                """C# projects should have a comprehensive linter configured such as StyleCop""",
+            )
+        ]

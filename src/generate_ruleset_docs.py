@@ -14,4 +14,7 @@ print("| ID | Severity | Enabled for Project Types | Description | Advice |")
 print("|----|----------|---------------------------|-------------|--------|")
 for check in checks:
     advice = check.advice.replace("\n", "</br>")
-    print(f"| {check.id} | {check.severity} | {', '.join(check.project_types)} | {check.reason} | {advice} |")
+    print(
+        f"| {check.id} | {check.severity} | {', '.join(check.project_types)} |"
+        f" {check.reason} | {advice} |"
+    )

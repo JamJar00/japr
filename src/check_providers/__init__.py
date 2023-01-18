@@ -13,5 +13,5 @@ check_providers = [
     CiCheckProvider(),
     PythonCheckProvider(),
     GitHubCheckProvider(),
-    CSharpCheckProvider()
+    CSharpCheckProvider(),
 ]
