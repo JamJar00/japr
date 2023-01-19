@@ -32,6 +32,6 @@ class LicenseCheckProvider(CheckProvider):
                 ),
                 """Create a LICENSE.md file in the root of the project and add content to describe to other users how this project can be used
 
-If you are not familiar with the difference licenses available to you, try https://choosealicense.com which guides you through the choice.""",
+If you are not familiar with the different licenses available to you, try https://choosealicense.com which guides you through the choice.""",
             )
         ]
