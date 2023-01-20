@@ -15,8 +15,8 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
         print(f"'{directory}' is not a valid directory so cannot be checked")
         return
 
-    if os.path.isfile(directory + "/.japr.yaml"):
-        with open(directory + "/.japr.yaml", "r") as f:
+    if os.path.isfile(os.path.join(directory, ".japr.yaml")):
+        with open(os.path.join(directory, ".japr.yaml"), "r") as f:
             data = yaml.safe_load(f)
             try:
                 ignored_checks = [
@@ -79,11 +79,11 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
             if result.result == Result.FAILED:
                 emoji_block = "\N{cross mark}"
             elif result.result == Result.PASSED:
-                emoji_block = "\N{heavy check mark}"
+                emoji_block = "\N{white heavy check mark}"
             elif result.result == Result.PRE_REQUISITE_CHECK_FAILED:
                 emoji_block = "\N{white question mark ornament}"
             else:
-                emoji_block = "\N{minus sign}"
+                emoji_block = "\N{heavy minus sign}"
 
             if check.severity == Severity.HIGH:
                 severity_color = "\033[1;31m"
@@ -130,7 +130,7 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
     )
     sev_all_checks = sum(check.severity.value for (_, check, _) in issues)
     score = int(5 - sev_bad_checks / sev_all_checks * 5)
-    print("\033[1mProject score: " + "\U00002B50" * score + "\033[0;0m (out of 5)")
+    print("\033[1mProject score: " + "\N{glowing star}" * score + "\N{heavy minus sign}" * (5 - score) + "\033[0;0m")
 
     passed = len(
         [
