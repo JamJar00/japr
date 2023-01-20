@@ -55,6 +55,12 @@ Japr will work for projects of all languages however there are additional checks
 - Python
 - C#
 
+The following table tracks the level of support for each language. Many languages also have additional checks not listed.
+|                   | Python    | C# |
+|-------------------|-----------|----|
+| Linter setup      | ✅        | ✅ |
+| Lock files in Git | ✅        | ❌ |
+
 ## TODO
 - Support code blocks in the advice section
 - Fix linting
