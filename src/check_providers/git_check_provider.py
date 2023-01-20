@@ -30,8 +30,9 @@ class GitCheckProvider(CheckProvider):
                 for f in repo.tree("HEAD").list_traverse()
                 if f.type == "blob" and f.name == ".DS_Store"
             ]
-            for ds_store_path in ds_store_paths:
-                yield CheckResult("GI005", Result.FAILED, ds_store_path)
+            if len(ds_store_paths) != 0:
+                for ds_store_path in ds_store_paths:
+                    yield CheckResult("GI005", Result.FAILED, ds_store_path)
             else:
                 yield CheckResult("GI005", Result.PASSED)
 

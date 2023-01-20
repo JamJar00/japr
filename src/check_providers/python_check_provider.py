@@ -74,8 +74,9 @@ class PythonCheckProvider(CheckProvider):
         except InvalidGitRepositoryError:
             repo = None  # Deal with later when we know what checks we're doing
 
-        for requirements_txt in requirements_txts:
-            yield CheckResult("PY001", Result.FAILED, requirements_txt)
+        if len(requirements_txts) != 0:
+            for requirements_txt in requirements_txts:
+                yield CheckResult("PY001", Result.FAILED, requirements_txt)
         else:
             yield CheckResult("PY001", Result.NOT_APPLICABLE)
 
@@ -153,7 +154,7 @@ class PythonCheckProvider(CheckProvider):
             for setup_cfg in setup_cfgs:
                 yield CheckResult("PY003", Result.FAILED, setup_cfg)
         else:
-            yield CheckResult("PY001", Result.NOT_APPLICABLE)
+            yield CheckResult("PY003", Result.NOT_APPLICABLE)
 
     def checks(self):
         return [

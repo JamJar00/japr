@@ -6,6 +6,7 @@ from check_providers.python_check_provider import PythonCheckProvider
 from check_providers.github_check_provider import GitHubCheckProvider
 from check_providers.csharp_check_provider import CSharpCheckProvider
 from check_providers.contributing_check_provider import ContributingCheckProvider
+from check_providers.javascript_check_provider import JavascriptCheckProvider
 
 check_providers = [
     ReadmeCheckProvider(),
@@ -16,4 +17,5 @@ check_providers = [
     GitHubCheckProvider(),
     CSharpCheckProvider(),
     ContributingCheckProvider(),
+    JavascriptCheckProvider(),
 ]

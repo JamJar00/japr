@@ -54,12 +54,13 @@ This score is always calculated against the full ruleset so is comparable betwee
 Japr will work for projects of all languages however there are additional checks for the following:
 - Python
 - C#
+- Javascript
 
 The following table tracks the level of support for each language. Many languages also have additional checks not listed.
-|                   | Python    | C# |
-|-------------------|-----------|----|
-| Linter setup      | ✅        | ✅ |
-| Lock files in Git | ✅        | ❌ |
+|                   | Python | C# | JS |
+|-------------------|--------|----|----|
+| Linter setup      | ✅     | ✅ | ✅ |
+| Lock files in Git | ✅     | ❌ | ✅ |
 
 ## TODO
 - Support code blocks in the advice section
@@ -67,10 +68,12 @@ The following table tracks the level of support for each language. Many language
 - Deploy to Docker Hub
 - Deploy to PyPi
 - Tests, always need ~more~ tests
+- JSON output
 
 ### Checks
 - Audit all checks
 - Check lock files are checked into Git
+- Are linters in dev dependencies?
 - No TODOs anywhere, they should be tracked in issues
 - More languages
 - Is it a recognised license? Appropriate for the type of project?
@@ -139,4 +142,10 @@ The following table tracks the level of support for each language. Many language
 | ID | Severity | Enabled for Project Types | Description | Advice |
 |----|----------|---------------------------|-------------|--------|
 | CT001 | Medium | open-source | Projects should have a CONTRIBUTING.md file describing how to contribute to the project | Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way |
+
+### Javascript
+| ID | Severity | Enabled for Project Types | Description | Advice |
+|----|----------|---------------------------|-------------|--------|
+| JS002 | Medium | open-source, inner-source, team | Javascript projects should have a linter configured | Javascript projects should have a comprehensive linter configured such as ESLint |
+| JS004 | Medium | open-source, inner-source, team, personal | Javascript projects using npm should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
 

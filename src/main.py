@@ -80,8 +80,10 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
                 emoji_block = "\N{cross mark}"
             elif result.result == Result.PASSED:
                 emoji_block = "\N{heavy check mark}"
-            else:
+            elif result.result == Result.PRE_REQUISITE_CHECK_FAILED:
                 emoji_block = "\N{white question mark ornament}"
+            else:
+                emoji_block = "\N{minus sign}"
 
             if check.severity == Severity.HIGH:
                 severity_color = "\033[1;31m"
