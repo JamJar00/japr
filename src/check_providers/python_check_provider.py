@@ -72,7 +72,7 @@ class PythonCheckProvider(CheckProvider):
         try:
             repo = Repo(directory)
         except InvalidGitRepositoryError:
-            repo = None # Deal with later when we know what checks we're doing
+            repo = None  # Deal with later when we know what checks we're doing
 
         for requirements_txt in requirements_txts:
             yield CheckResult("PY001", Result.FAILED, requirements_txt)
@@ -94,8 +94,13 @@ class PythonCheckProvider(CheckProvider):
 
                 # Check lock file is committed into Git
                 if repo is not None:
-                    lock_file = os.path.join(os.path.split(pyproject_toml)[0], "poetry.lock")
-                    is_file_committed = any(f.type == "blob" and f.path == lock_file for f in repo.tree("HEAD").list_traverse())
+                    lock_file = os.path.join(
+                        os.path.split(pyproject_toml)[0], "poetry.lock"
+                    )
+                    is_file_committed = any(
+                        f.type == "blob" and f.path == lock_file
+                        for f in repo.tree("HEAD").list_traverse()
+                    )
                     yield CheckResult(
                         "PY004",
                         Result.PASSED if is_file_committed else Result.FAILED,
@@ -107,7 +112,6 @@ class PythonCheckProvider(CheckProvider):
                         Result.PRE_REQUISITE_CHECK_FAILED,
                         pyproject_toml,
                     )
-
 
             for pipfile in pipfiles:
                 dependencies = _extract_dependencies_from_pipfile(
@@ -124,7 +128,10 @@ class PythonCheckProvider(CheckProvider):
                 # Check lock file is committed into Git
                 if repo is not None:
                     lock_file = pipfile + ".lock"
-                    is_file_committed = any(f.type == "blob" and f.path == lock_file for f in repo.tree("HEAD").list_traverse())
+                    is_file_committed = any(
+                        f.type == "blob" and f.path == lock_file
+                        for f in repo.tree("HEAD").list_traverse()
+                    )
                     yield CheckResult(
                         "PY004",
                         Result.PASSED if is_file_committed else Result.FAILED,

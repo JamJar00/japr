@@ -44,9 +44,15 @@ class GitHubCheckProvider(CheckProvider):
                 os.path.isfile(os.path.join(directory, "pull_request_template")),
                 os.path.isfile(os.path.join(directory, "pull_request_template.md")),
                 os.path.isfile(os.path.join(directory, "docs/pull_request_template")),
-                os.path.isfile(os.path.join(directory, "docs/pull_request_template.md")),
-                os.path.isfile(os.path.join(directory, ".github/pull_request_template")),
-                os.path.isfile(os.path.join(directory, ".github/pull_request_template.md")),
+                os.path.isfile(
+                    os.path.join(directory, "docs/pull_request_template.md")
+                ),
+                os.path.isfile(
+                    os.path.join(directory, ".github/pull_request_template")
+                ),
+                os.path.isfile(
+                    os.path.join(directory, ".github/pull_request_template.md")
+                ),
                 os.path.isdir(os.path.join(directory, "pull_request_template")),
                 os.path.isdir(os.path.join(directory, "docs/pull_request_template")),
                 os.path.isdir(os.path.join(directory, ".github/pull_request_template")),

@@ -29,6 +29,6 @@ class ContributingCheckProvider(CheckProvider):
                 (
                     "Projects should have a CONTRIBUTING.md file describing how to contribute to the project"
                 ),
-                """Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way"""
+                """Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way""",
             )
         ]
