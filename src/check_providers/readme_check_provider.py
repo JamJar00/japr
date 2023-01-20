@@ -7,12 +7,12 @@ class ReadmeCheckProvider(CheckProvider):
         return "Readme"
 
     def test(self, directory):
-        if os.path.isfile(directory + "/README.md"):
-            readme_path = directory + "/README.md"
-        elif os.path.isfile(directory + "/README"):
-            readme_path = directory + "/README"
-        elif os.path.isfile(directory + "/README.txt"):
-            readme_path = directory + "/README.txt"
+        if os.path.isfile(os.path.join(directory, "README.md")):
+            readme_path = os.path.join(directory, "README.md")
+        elif os.path.isfile(os.path.join(directory, "README")):
+            readme_path = os.path.join(directory, "README")
+        elif os.path.isfile(os.path.join(directory, "README.txt")):
+            readme_path = os.path.join(directory, "README.txt")
         else:
             readme_path = None
 

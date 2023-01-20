@@ -69,6 +69,10 @@ Japr will work for projects of all languages however there are additional checks
 - More languages
 - Is it a recognised license? Appropriate for the type of project?
 
+#### Python
+- Support Flit & Setuptools as other dependency managers
+    https://peps.python.org/pep-0621/
+
 #### GitHub
 - Pull request templates/issue templates should have YAML front matter
 - Issue templates should be in the .github folder

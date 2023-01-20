@@ -3,17 +3,17 @@ import os
 
 
 CI_PATHS = [
-    "/.gitlab-ci.yml",
-    "/.travis.yml",
-    "/appveyor.yml",
-    "/.appveyor.yml",
-    "/circle.yml",
-    "/.circleci/config.yml",
-    "/Jenkinsfile",
-    "/.drone.yml",
-    "/azure-pipelines.yml",
-    "/bitbucket-pipelines.yml",
-    "/.buildkite/pipeline.yml",
+    ".gitlab-ci.yml",
+    ".travis.yml",
+    "appveyor.yml",
+    ".appveyor.yml",
+    "circle.yml",
+    ".circleci/config.yml",
+    "Jenkinsfile",
+    ".drone.yml",
+    "azure-pipelines.yml",
+    "bitbucket-pipelines.yml",
+    ".buildkite/pipeline.yml",
 ]
 
 
@@ -24,11 +24,11 @@ class CiCheckProvider(CheckProvider):
     def test(self, directory):
         ci_path = None
         for path in CI_PATHS:
-            if os.path.isfile(directory + path):
-                ci_path = directory + path
+            if os.path.isfile(os.path.join(directory, path)):
+                ci_path = os.path.join(directory, path)
         else:
-            if os.path.isdir(directory + "/.github/workflows/"):
-                ci_path = directory + "/.buildkite/pipeline.yml"
+            if os.path.isdir(os.path.join(directory, ".github/workflows/")):
+                ci_path = os.path.join(directory, ".buildkite/pipeline.yml")
 
         yield CheckResult(
             "CI001", Result.PASSED if ci_path is not None else Result.FAILED

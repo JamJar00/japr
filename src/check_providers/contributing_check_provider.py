@@ -12,9 +12,9 @@ class ContributingCheckProvider(CheckProvider):
             Result.PASSED
             if any(
                 [
-                    os.path.isfile(directory + "/CONTRIBUTING.md"),
-                    os.path.isfile(directory + "/CONTRIBUTING"),
-                    os.path.isfile(directory + "/CONTRIBUTING.txt"),
+                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.md")),
+                    os.path.isfile(os.path.join(directory, "CONTRIBUTING")),
+                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.txt")),
                 ]
             )
             else Result.FAILED,

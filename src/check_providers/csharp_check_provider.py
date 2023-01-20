@@ -1,5 +1,6 @@
 from check import Check, CheckProvider, CheckResult, Result, Severity
 import glob
+import os
 import xml.etree.ElementTree as ET
 
 
@@ -36,7 +37,7 @@ class CSharpCheckProvider(CheckProvider):
 
         for cs_project in cs_projects:
             dependencies = _extract_dependencies_from_csproj(
-                directory + "/" + cs_project
+                os.path.join(directory, cs_project)
             )
             # TODO support EnableNetAnalyzers property
             yield CheckResult(

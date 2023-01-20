@@ -21,7 +21,7 @@ class GitCheckProvider(CheckProvider):
             yield CheckResult(
                 "GI004",
                 Result.PASSED
-                if os.path.isfile(directory + "/.gitignore")
+                if os.path.isfile(os.path.join(directory, ".gitignore"))
                 else Result.FAILED,
             )
 

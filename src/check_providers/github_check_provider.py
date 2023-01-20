@@ -24,32 +24,32 @@ class GitHubCheckProvider(CheckProvider):
         # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates
         has_issue_template = any(
             [
-                os.path.isfile(directory + "/issue_template"),
-                os.path.isfile(directory + "/issue_template.md"),
-                os.path.isfile(directory + "/issue_template.yml"),
-                os.path.isfile(directory + "/docs/issue_template"),
-                os.path.isfile(directory + "/docs/issue_template.md"),
-                os.path.isfile(directory + "/docs/issue_template.yml"),
-                os.path.isfile(directory + "/.github/issue_template"),
-                os.path.isfile(directory + "/.github/issue_template.md"),
-                os.path.isfile(directory + "/.github/issue_template.yml"),
-                os.path.isdir(directory + "/issue_template"),
-                os.path.isdir(directory + "/docs/issue_template"),
-                os.path.isdir(directory + "/.github/issue_template"),
+                os.path.isfile(os.path.join(directory, "issue_template")),
+                os.path.isfile(os.path.join(directory, "issue_template.md")),
+                os.path.isfile(os.path.join(directory, "issue_template.yml")),
+                os.path.isfile(os.path.join(directory, "docs/issue_template")),
+                os.path.isfile(os.path.join(directory, "docs/issue_template.md")),
+                os.path.isfile(os.path.join(directory, "docs/issue_template.yml")),
+                os.path.isfile(os.path.join(directory, ".github/issue_template")),
+                os.path.isfile(os.path.join(directory, ".github/issue_template.md")),
+                os.path.isfile(os.path.join(directory, ".github/issue_template.yml")),
+                os.path.isdir(os.path.join(directory, "issue_template")),
+                os.path.isdir(os.path.join(directory, "docs/issue_template")),
+                os.path.isdir(os.path.join(directory, ".github/issue_template")),
             ]
         )
         # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository
         has_pull_request_template = any(
             [
-                os.path.isfile(directory + "/pull_request_template"),
-                os.path.isfile(directory + "/pull_request_template.md"),
-                os.path.isfile(directory + "/docs/pull_request_template"),
-                os.path.isfile(directory + "/docs/pull_request_template.md"),
-                os.path.isfile(directory + "/.github/pull_request_template"),
-                os.path.isfile(directory + "/.github/pull_request_template.md"),
-                os.path.isdir(directory + "/pull_request_template"),
-                os.path.isdir(directory + "/docs/pull_request_template"),
-                os.path.isdir(directory + "/.github/pull_request_template"),
+                os.path.isfile(os.path.join(directory, "pull_request_template")),
+                os.path.isfile(os.path.join(directory, "pull_request_template.md")),
+                os.path.isfile(os.path.join(directory, "docs/pull_request_template")),
+                os.path.isfile(os.path.join(directory, "docs/pull_request_template.md")),
+                os.path.isfile(os.path.join(directory, ".github/pull_request_template")),
+                os.path.isfile(os.path.join(directory, ".github/pull_request_template.md")),
+                os.path.isdir(os.path.join(directory, "pull_request_template")),
+                os.path.isdir(os.path.join(directory, "docs/pull_request_template")),
+                os.path.isdir(os.path.join(directory, ".github/pull_request_template")),
             ]
         )
 

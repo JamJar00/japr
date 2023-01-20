@@ -12,9 +12,9 @@ class LicenseCheckProvider(CheckProvider):
             Result.PASSED
             if any(
                 [
-                    os.path.isfile(directory + "/LICENSE.md"),
-                    os.path.isfile(directory + "/LICENSE"),
-                    os.path.isfile(directory + "/LICENSE.txt"),
+                    os.path.isfile(os.path.join(directory, "LICENSE.md")),
+                    os.path.isfile(os.path.join(directory, "LICENSE")),
+                    os.path.isfile(os.path.join(directory, "LICENSE.txt")),
                 ]
             )
             else Result.FAILED,
