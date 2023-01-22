@@ -1,5 +1,7 @@
 # Jamie's Awesome Project Rater
-A cross-language tool for rating the overall quality of open source, commercial and personal projects
+A cross-language tool for rating and enforcing the overall quality of projects by looking at tool & language setup
+
+It's a linter that makes sure you install linters (and some other stuff)
 
 ![Screenshot of a report](/screenshot.png)
 
@@ -8,7 +10,7 @@ TODO
 
 ## Usage
 ```bash
-japr <directory>
+japr <directory> -t <project-type>
 ```
 
 For more options:
