@@ -6,7 +6,15 @@ It's a linter that makes sure you install linters (and some other stuff)
 ![Screenshot of a report](/screenshot.png)
 
 ## Installation
-TODO
+Using pip (when released, we're not quite there yet):
+```bash
+pip install japr
+```
+
+Using [pipx](https://github.com/pypa/pipx) which will get you the latest, bleeding edge version:
+```bash
+pipx install git+https://github.com/JamJar00/japr
+```
 
 ## Usage
 ```bash
