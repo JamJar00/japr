@@ -63,11 +63,15 @@ class JavascriptCheckProvider(CheckProvider):
 
                 # Check lock file is committed into Git
                 if repo is not None:
-                    lock_file = os.path.join(
+                    package_lock_file = os.path.join(
                         os.path.split(package_json)[0], "package-lock.json"
                     )
+                    yarn_lock_file = os.path.join(
+                        os.path.split(package_json)[0], "yarn.lock"
+                    )
                     is_file_committed = any(
-                        f.type == "blob" and f.path == lock_file
+                        f.type == "blob"
+                        and (f.path == package_lock_file or f.path == yarn_lock_file)
                         for f in repo.tree("HEAD").list_traverse()
                     )
                     yield CheckResult(
@@ -98,7 +102,7 @@ class JavascriptCheckProvider(CheckProvider):
                 "JS004",
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team", "personal"],
-                "Javascript projects using npm should have their lock files committed into Git",
+                "Javascript projects should have their lock files committed into Git",
                 """When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed.""",
             ),
         ]

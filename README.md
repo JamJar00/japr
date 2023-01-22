@@ -67,10 +67,11 @@ Japr will work for projects of all languages however there are additional checks
 - Javascript
 
 The following table tracks the level of support for each language. Many languages also have additional checks not listed.
-|                   | Python | C# | JS |
-|-------------------|--------|----|----|
-| Linter setup      | ✅     | ✅ | ✅ |
-| Lock files in Git | ✅     | ❌ | ✅ |
+|                       | Python         | C# | JS        |
+|-----------------------|----------------|----|-----------|
+| Linter setup          | ✅             | ✅ | ✅        |
+| Lock files in Git     | ✅             | ❌ | ✅        |
+| Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn |
 
 ## TODO
 - Support code blocks in the advice section
