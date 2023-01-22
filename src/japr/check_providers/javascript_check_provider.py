@@ -69,9 +69,13 @@ class JavascriptCheckProvider(CheckProvider):
                     yarn_lock_file = os.path.join(
                         os.path.split(package_json)[0], "yarn.lock"
                     )
+                    pnpm_lock_file = os.path.join(
+                        os.path.split(package_json)[0], "pnpm-lock.yaml"
+                    )
                     is_file_committed = any(
                         f.type == "blob"
-                        and (f.path == package_lock_file or f.path == yarn_lock_file)
+                        and f.path
+                        in [package_lock_file, yarn_lock_file, pnpm_lock_file]
                         for f in repo.tree("HEAD").list_traverse()
                     )
                     yield CheckResult(
