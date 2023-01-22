@@ -130,7 +130,12 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
     )
     sev_all_checks = sum(check.severity.value for (_, check, _) in issues)
     score = int(5 - sev_bad_checks / sev_all_checks * 5)
-    print("\033[1mProject score: " + "\N{glowing star}" * score + "\N{heavy minus sign}" * (5 - score) + "\033[0;0m")
+    print(
+        "\033[1mProject score: "
+        + "\N{glowing star}" * score
+        + "\N{heavy minus sign}" * (5 - score)
+        + "\033[0;0m"
+    )
 
     passed = len(
         [
@@ -170,6 +175,7 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
     print()
 
     return failed == 0
+
 
 def cli(args=None):
     parser = argparse.ArgumentParser(
