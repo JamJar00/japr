@@ -1,6 +1,6 @@
 import argparse
-from check_providers import check_providers
-from check import Result, Severity
+from japr.check_providers import check_providers
+from japr.check import Result, Severity
 import os
 import time
 import yaml
@@ -9,7 +9,7 @@ import yaml
 PROJECT_TYPES = ["open-source", "inner-source", "team", "personal"]
 
 
-def check_directory(directory, project_type, is_summary=False, is_profile=False):
+def _check_directory(directory, project_type, is_summary=False, is_profile=False):
     directory = os.path.abspath(directory)
     if not os.path.isdir(directory):
         print(f"'{directory}' is not a valid directory so cannot be checked")
@@ -171,32 +171,32 @@ def check_directory(directory, project_type, is_summary=False, is_profile=False)
 
     return failed == 0
 
+def cli(args=None):
+    parser = argparse.ArgumentParser(
+        prog="japr",
+        description=(
+            "A cross-language tool for rating the overall quality of open source,"
+            " commercial and personal projects"
+        ),
+    )
 
-parser = argparse.ArgumentParser(
-    prog="japr",
-    description=(
-        "A cross-language tool for rating the overall quality of open source,"
-        " commercial and personal projects"
-    ),
-)
+    parser.add_argument("directory", help="the directory to scan")
+    parser.add_argument(
+        "-t",
+        "--project-type",
+        help="the type of project being scanned",
+        choices=PROJECT_TYPES,
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--profile", help="times how long each check takes to run", action="store_true"
+    )
+    group.add_argument(
+        "-s", "--summary", help="prints results in summary form", action="store_true"
+    )
 
-parser.add_argument("directory", help="the directory to scan")
-parser.add_argument(
-    "-t",
-    "--project-type",
-    help="the type of project being scanned",
-    choices=PROJECT_TYPES,
-)
-group = parser.add_mutually_exclusive_group()
-group.add_argument(
-    "--profile", help="times how long each check takes to run", action="store_true"
-)
-group.add_argument(
-    "-s", "--summary", help="prints results in summary form", action="store_true"
-)
-
-args = parser.parse_args()
-if check_directory(args.directory, args.project_type, args.summary, args.profile):
-    quit(0)
-else:
-    quit(1)
+    args = parser.parse_args(args)
+    if _check_directory(args.directory, args.project_type, args.summary, args.profile):
+        quit(0)
+    else:
+        quit(1)

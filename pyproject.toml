@@ -6,6 +6,9 @@ authors = ["Jamie Read <hey@jread.dev>"]
 license = "MIT"
 readme = "README.md"
 
+[tool.poetry.scripts]
+japr = "japr.japr:cli"
+
 [tool.poetry.dependencies]
 python = "^3.10"
 gitpython = "^3.1.30"

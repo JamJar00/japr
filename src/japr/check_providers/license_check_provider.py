@@ -1,4 +1,4 @@
-from check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 import os
 
 

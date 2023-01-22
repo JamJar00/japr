@@ -1,4 +1,4 @@
-from check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 import glob
 import os
 import xml.etree.ElementTree as ET

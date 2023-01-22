@@ -1,7 +1,4 @@
-from types import prepare_class
-
-from gitdb.pack import pack
-from check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 from git import InvalidGitRepositoryError, Repo
 import glob
 import os
