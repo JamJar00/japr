@@ -28,6 +28,21 @@ def _extract_dependencies_from_csproj(file):
     return set(dependencies)
 
 
+def _has_enable_net_analyzers_in_csproj(file):
+    data = ET.parse(file)
+
+    try:
+        # TODO this defaults to true on net5.0 and above
+        # TODO consider the EnforceCodeStyleInBuild property too
+        properties = data.findall("/PropertyGroup/EnableNETAnalyzers")
+        return len(properties) > 0 and all(
+            property.text == "true"
+            for property in properties
+        )
+    except KeyError:
+        return False
+
+
 class CSharpCheckProvider(CheckProvider):
     def name(self):
         return "C#"
@@ -40,11 +55,11 @@ class CSharpCheckProvider(CheckProvider):
                 dependencies = _extract_dependencies_from_csproj(
                     os.path.join(directory, cs_project)
                 )
-                # TODO support EnableNetAnalyzers property
+                has_enable_net_analyzers = _has_enable_net_analyzers_in_csproj(os.path.join(directory, cs_project))
                 yield CheckResult(
                     "CS002",
                     Result.PASSED
-                    if len(set(_linters).intersection(dependencies))
+                    if len(set(_linters).intersection(dependencies)) or has_enable_net_analyzers
                     else Result.FAILED,
                     cs_project,
                 )
