@@ -1,6 +1,6 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+import japr.util
 from git import InvalidGitRepositoryError, Repo
-import glob
 import toml
 import os
 
@@ -59,15 +59,11 @@ class PythonCheckProvider(CheckProvider):
         return "Python"
 
     def test(self, directory):
-        requirements_txts = glob.glob(
-            "**/requirements.txt", recursive=True, root_dir=directory
-        )
-        pyproject_tomls = glob.glob(
-            "**/pyproject.toml", recursive=True, root_dir=directory
-        )
-        pipfiles = glob.glob("**/Pipfile", recursive=True, root_dir=directory)
-        setup_pys = glob.glob("**/setup.py", recursive=True, root_dir=directory)
-        setup_cfgs = glob.glob("**/setup.cfg", recursive=True, root_dir=directory)
+        requirements_txts = list(japr.util.find_files_with_name(directory, "requirements.txt"))
+        pyproject_tomls = list(japr.util.find_files_with_name(directory, "pyproject.toml"))
+        pipfiles = list(japr.util.find_files_with_name(directory, "Pipfile"))
+        setup_pys = list(japr.util.find_files_with_name(directory, "setup.py"))
+        setup_cfgs = list(japr.util.find_files_with_name(directory, "setup.cfg"))
 
         try:
             repo = Repo(directory)

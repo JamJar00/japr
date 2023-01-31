@@ -80,7 +80,6 @@ The following table tracks the level of support for each language. Many language
 - Deploy to PyPi
 - Tests, always need ~more~ tests
 - JSON output
-- Omit folders like node_modules/ and bin/ from glob searches
 
 ### Checks
 - Audit all checks

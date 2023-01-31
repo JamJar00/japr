@@ -1,5 +1,5 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
-import glob
+import japr.util
 import os
 import xml.etree.ElementTree as ET
 
@@ -48,7 +48,7 @@ class CSharpCheckProvider(CheckProvider):
         return "C#"
 
     def test(self, directory):
-        cs_projects = glob.glob("**/*.csproj", recursive=True, root_dir=directory)
+        cs_projects = list(japr.util.find_files_with_extension(directory, "csproj"))
 
         if len(cs_projects) != 0:
             for cs_project in cs_projects:

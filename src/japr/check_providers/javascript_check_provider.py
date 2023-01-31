@@ -1,6 +1,6 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+import japr.util
 from git import InvalidGitRepositoryError, Repo
-import glob
 import os
 import json
 
@@ -37,7 +37,7 @@ class JavascriptCheckProvider(CheckProvider):
         return "Javascript"
 
     def test(self, directory):
-        package_jsons = glob.glob("**/package.json", recursive=True, root_dir=directory)
+        package_jsons = list(japr.util.find_files_with_name(directory, "package.json"))
 
         try:
             repo = Repo(directory)
@@ -46,10 +46,6 @@ class JavascriptCheckProvider(CheckProvider):
 
         if len(package_jsons) != 0:
             for package_json in package_jsons:
-                # It's bad enough we can't exclude this from the glob, let's not check every packages' package's package.json has a linter
-                if "node_modules" in package_json:
-                    continue
-
                 dependencies = _extract_dependencies_from_package_json(
                     os.path.join(directory, package_json)
                 )
