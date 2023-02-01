@@ -80,6 +80,7 @@ The following table tracks the level of support for each language. Many language
 - Deploy to PyPi
 - Tests, always need ~more~ tests
 - JSON output
+- Allow enabling checks even when project type usually ignores it
 
 ### Checks
 - Audit all checks
@@ -88,6 +89,10 @@ The following table tracks the level of support for each language. Many language
 - No TODOs anywhere, they should be tracked in issues
 - More languages
 - Is it a recognised license? Appropriate for the type of project?
+- Copyright headers?
+
+#### Git
+- Don't commit .vs/.idea folders
 
 #### Python
 - Support Flit & Setuptools as other dependency managers
