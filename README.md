@@ -91,9 +91,6 @@ The following table tracks the level of support for each language. Many language
 - Is it a recognised license? Appropriate for the type of project?
 - Copyright headers?
 
-#### Git
-- Don't commit .vs/.idea folders
-
 #### Python
 - Support Flit & Setuptools as other dependency managers
     https://peps.python.org/pep-0621/
@@ -128,7 +125,8 @@ The following table tracks the level of support for each language. Many language
 | GI002 | High | open-source, inner-source, team, personal | Projects in Git should have a remote copy in origin | This project does not have a Git remote named 'origin' which suggests there is no backup copy of the project should it be lost.</br></br>Setup a Git repository on your favourite Git service (e.g. GitHub) and follow the instructions to add a remote to an existing project. The instructions will likely look like:</br></br>git remote add origin <your url></br>git push origin master |
 | GI003 | High | open-source, inner-source, team, personal | Projects in Git should switch from a 'master' branch to a 'main' branch | This project has a branch named 'master' however it is now recommended to use a branch named 'main' to avoid culturally inappropriate language.</br></br>You can switch your primary branch using:</br></br>git checkout master</br>git pull origin master</br>git switch -c main</br>git push origin main</br>git branch -d master</br>git push :master</br></br>You may also need to make changes in your remote to change the default branch |
 | GI004 | Low | open-source, inner-source, team, personal | Projects in Git should have a .gitignore file | .gitignore files help you avoid committing unwanted files into Git such as binaries or build artifacts. You should create a .gitignore file for this project.</br></br>You can find comprehensive examples for your chosen language here https://github.com/github/gitignore |
-| GI005 | Low | open-source, inner-source, team, personal | Avoid committing .DS_store files | .DS_store files are OSX metadata files in a proprietary binary format. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.</br></br>You can tell git to ignore them from commits by adding them to your .gitignore.</br></br>You can also all them to your global .gitignore to avoid ever committing them in any repository. Configure a global .gitignore using the following:</br>git config --global core.excludesfile ~/.gitignore</br></br>To remove one from the current repository you can use:</br>git rm --cached ./path/to/.DS_Store |
+| GI005 | Medium | open-source, inner-source, team, personal | Avoid committing .DS_store files | .DS_store files are OSX metadata files in a proprietary binary format. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.</br></br>You can tell git to ignore them from commits by adding them to your .gitignore.</br></br>You can also all them to your global .gitignore to avoid ever committing them in any repository. Configure a global .gitignore using the following:</br>git config --global core.excludesfile ~/.gitignore</br></br>To remove one from the current repository you can use:</br>git rm --cached ./path/to/.DS_Store |
+| GI006 | Medium | open-source, inner-source, team, personal | Avoid committing IDE related files/directories | Many IDEs store IDE specific files with your project. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.</br></br>You can tell git to ignore them from commits by adding them to your .gitignore.</br></br>You can also all them to your global .gitignore to avoid ever committing them in any repository. Configure a global .gitignore using the following:</br>git config --global core.excludesfile ~/.gitignore</br></br>To remove one from the current repository you can use:</br>git rm --cached /path/to/file |
 
 ### CI
 | ID | Severity | Enabled for Project Types | Description | Advice |
@@ -163,5 +161,5 @@ The following table tracks the level of support for each language. Many language
 | ID | Severity | Enabled for Project Types | Description | Advice |
 |----|----------|---------------------------|-------------|--------|
 | JS002 | Medium | open-source, inner-source, team | Javascript projects should have a linter configured | Javascript projects should have a comprehensive linter configured such as ESLint |
-| JS004 | Medium | open-source, inner-source, team, personal | Javascript projects using npm should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
+| JS004 | Medium | open-source, inner-source, team, personal | Javascript projects should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
 

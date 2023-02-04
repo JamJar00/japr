@@ -2,6 +2,23 @@ from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 from git import InvalidGitRepositoryError, Repo
 import os
 
+IDE_DIRECTORIES = [
+    ".vs",      # Visual Studio
+    ".idea",    # Intellij
+    ".settings" # Eclipse
+]
+
+IDE_FILES = [
+    ".classpath", # Eclipse
+    ".project"
+]
+
+IDE_FILE_EXTENSIONS = [
+    "swp",     # Vim
+    "iml",     # Intellij
+    "iws",
+    "ipr"
+]
 
 class GitCheckProvider(CheckProvider):
     def name(self):
@@ -36,12 +53,26 @@ class GitCheckProvider(CheckProvider):
             else:
                 yield CheckResult("GI005", Result.PASSED)
 
+            ide_paths = [
+               f.path
+               for f in repo.tree("HEAD").list_traverse()
+               if (f.type == "tree" and f.name in IDE_DIRECTORIES)
+               or (f.type == "blob" and f.name in IDE_FILES)
+               or (f.type == "blob" and os.path.splitext(f.name)[1] in IDE_FILE_EXTENSIONS)
+           ]
+            if len(ide_paths) != 0:
+                for ide_path in ide_paths:
+                    yield CheckResult("GI006", Result.FAILED, ide_path)
+            else:
+                yield CheckResult("GI006", Result.PASSED)
+
         except InvalidGitRepositoryError:
             yield CheckResult("GI001", Result.FAILED)
             yield CheckResult("GI002", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI003", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI004", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI005", Result.PRE_REQUISITE_CHECK_FAILED)
+            yield CheckResult("GI006", Result.PRE_REQUISITE_CHECK_FAILED)
 
     def checks(self):
         return [
@@ -98,7 +129,7 @@ You can find comprehensive examples for your chosen language here https://github
             ),
             Check(
                 "GI005",
-                Severity.LOW,
+                Severity.MEDIUM,
                 ["open-source", "inner-source", "team", "personal"],
                 "Avoid committing .DS_store files",
                 """.DS_store files are OSX metadata files in a proprietary binary format. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.
@@ -110,5 +141,20 @@ git config --global core.excludesfile ~/.gitignore
 
 To remove one from the current repository you can use:
 git rm --cached ./path/to/.DS_Store""",
+            ),
+            Check(
+                "GI006",
+                Severity.MEDIUM,
+                ["open-source", "inner-source", "team", "personal"],
+                "Avoid committing IDE related files/directories",
+                """Many IDEs store IDE specific files with your project. When committed to Git repositories they cause unnecessary changes and provide no value as they differ per machine.
+
+You can tell git to ignore them from commits by adding them to your .gitignore.
+
+You can also all them to your global .gitignore to avoid ever committing them in any repository. Configure a global .gitignore using the following:
+git config --global core.excludesfile ~/.gitignore
+
+To remove one from the current repository you can use:
+git rm --cached /path/to/file""",
             ),
         ]
