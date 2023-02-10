@@ -5,6 +5,9 @@ It's a linter that makes sure you install linters (and some other stuff)
 
 ![Screenshot of a report](/screenshot.png)
 
+** Japr is in prerelease and may change in drastic ways without warning **
+Please do try it in your projects, but just be aware!
+
 ## Installation
 Using pip (when released, we're not quite there yet):
 ```bash
@@ -75,12 +78,12 @@ The following table tracks the level of support for each language. Many language
 
 ## TODO
 - Support code blocks in the advice section
-- Fix linting
 - Deploy to Docker Hub
 - Deploy to PyPi
 - Tests, always need ~more~ tests
 - JSON output
 - Allow enabling checks even when project type usually ignores it
+- Allow configuring ignore rules only for certain files
 
 ### Checks
 - Audit all checks
@@ -94,6 +97,7 @@ The following table tracks the level of support for each language. Many language
 #### Python
 - Support Flit & Setuptools as other dependency managers
     https://peps.python.org/pep-0621/
+- No Python 2
 
 #### GitHub
 - Pull request templates/issue templates should have YAML front matter
