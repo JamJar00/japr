@@ -1,5 +1,22 @@
-from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
 import os
+
+
+class AddContributorFix(CheckFix):
+    def fix(self, directory, _):
+        with open(os.path.join(directory, "CONTRIBUTING.md"), 'w') as f:
+            # TODO provide a better template like one from https://bttger.github.io/contributing-gen-web/
+            f.write("""# Contributing
+This is an example contributing document. You should fill this in with guidelines on how to contribute to this project. See https://bttger.github.io/contributing-gen-web/ for a template""")
+        return True
+
+    @property
+    def success_message(self):
+        return "Created a CONTRIBUTING.md file in the root directory from a template. You should add your own content to it."
+
+    @property
+    def failure_message(self):
+        return "Tried to create a CONTRIBUTING.md file in the root directory but was unable to."
 
 
 class ContributingCheckProvider(CheckProvider):
@@ -18,6 +35,7 @@ class ContributingCheckProvider(CheckProvider):
                 ]
             )
             else Result.FAILED,
+            fix=AddContributorFix(),
         )
 
     def checks(self):

@@ -9,7 +9,7 @@ import yaml
 PROJECT_TYPES = ["open-source", "inner-source", "team", "personal"]
 
 
-def _check_directory(directory, project_type, is_summary=False, is_profile=False):
+def _check_directory(directory, project_type, is_summary=False, is_profile=False, fix=False):
     directory = os.path.abspath(directory)
     if not os.path.isdir(directory):
         print(f"'{directory}' is not a valid directory so cannot be checked")
@@ -41,6 +41,9 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
         raise Exception(
             "Invalid project type. Must be one of " + ", ".join(PROJECT_TYPES)
         )
+
+    if fix:
+        is_summary = True
 
     issues = []
     for check_provider in check_providers:
@@ -99,21 +102,28 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
             else:
                 file_block = ""
 
+            if result.fix is not None:
+                fix_block = f" - A fix is available \N{wrench}"
+            else:
+                fix_block = ""
+
             if is_summary:
                 print(
                     f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
                     f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
+                    f"{fix_block}"
                 )
             elif is_profile:
                 print(
                     f"{emoji_block} {severity_color}{check.severity.name.ljust(6)}\033[0;0m"
                     f" - {profile_block} - \033[1m{check.id}\033[0;0m"
-                    f" {file_block}{check.reason}"
+                    f" {file_block}{check.reason}{fix_block}"
                 )
             else:
                 print(
                     f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
                     f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
+                    f"{fix_block}"
                 )
                 print()
                 print(check.advice)
@@ -174,6 +184,15 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
 
     print()
 
+    if fix:
+        for result, check, profile_time in issues:
+            if result.result == Result.FAILED and result.fix is not None:
+                if (result.fix.fix(directory, result.file_path)):
+                    print(f"\N{white heavy check mark} {result.fix.success_message}")
+                else:
+                    print(f"\N{cross mark} {result.fix.failure_message}")
+
+
     return failed == 0
 
 
@@ -200,9 +219,12 @@ def cli(args=None):
     group.add_argument(
         "-s", "--summary", help="prints results in summary form", action="store_true"
     )
+    group.add_argument(
+        "--fix", help="experimentally try to fix issues found", action="store_true"
+    )
 
     args = parser.parse_args(args)
-    if _check_directory(args.directory, args.project_type, args.summary, args.profile):
+    if _check_directory(args.directory, args.project_type, args.summary, args.profile, args.fix):
         quit(0)
     else:
         quit(1)

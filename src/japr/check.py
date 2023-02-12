@@ -26,10 +26,27 @@ class Check:
 
 
 class CheckResult:
-    def __init__(self, id, result, file_path=None):
+    def __init__(self, id, result, file_path=None, fix=None):
         self.id = id
         self.result = result
         self.file_path = file_path
+        self.fix = fix
+
+
+class CheckFix(ABC):
+    @abstractmethod
+    def fix(self, directory, file_path):
+        pass
+
+    @property
+    @abstractmethod
+    def success_message(self):
+        pass
+
+    @property
+    @abstractmethod
+    def failure_message(self):
+        pass
 
 
 class Severity(Enum):

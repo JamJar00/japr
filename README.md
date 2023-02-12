@@ -76,6 +76,9 @@ The following table tracks the level of support for each language. Many language
 | Lock files in Git     | ✅             | ❌ | ✅        |
 | Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn |
 
+## Experimental Automatic Fixes
+Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental and should never be used on serious project as it could cause serios damage to the project**
+
 ## TODO
 - Support code blocks in the advice section
 - Deploy to Docker Hub
@@ -84,6 +87,7 @@ The following table tracks the level of support for each language. Many language
 - JSON output
 - Allow enabling checks even when project type usually ignores it
 - Allow configuring ignore rules only for certain files
+- Fixes for more checks and stabilise
 
 ### Checks
 - Audit all checks

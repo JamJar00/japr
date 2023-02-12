@@ -1,6 +1,42 @@
-from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
 from git import InvalidGitRepositoryError, Repo
 import os
+
+
+class AddIssueTemplateFix(CheckFix):
+    def fix(self, directory, _):
+        os.makedirs(os.path.join(directory, ".github"), exist_ok=True)
+        with open(os.path.join(directory, ".github/issue_template.md"), 'w') as f:
+            # TODO provide a better template
+            f.write("""# Issue Title
+This is an example issue template. You should fill this in with helpful headings and example content that will help you diagnose problems or design requsted features.""")
+        return True
+
+    @property
+    def success_message(self):
+        return "Created an issue template at .github/issue_template.md from a template. You should add your own content to it."
+
+    @property
+    def failure_message(self):
+        return "Tried to create an issue template at .github/issue_template.md but was unable to."
+
+
+class AddPullRequestTemplateFix(CheckFix):
+    def fix(self, directory, _):
+        os.makedirs(os.path.join(directory, ".github"), exist_ok=True)
+        with open(os.path.join(directory, ".github/pull_request_template.md"), 'w') as f:
+            # TODO provide a better template
+            f.write("""# Pull Request Title
+This is an example pull request template. You should fill this in with helpful headings and example content that will help to understand the purpose of this pull request and what other work needs to be done in order to accept it.""")
+        return True
+
+    @property
+    def success_message(self):
+        return "Created an issue template at .github/pull_request_template.md from a template. You should add your own content to it."
+
+    @property
+    def failure_message(self):
+        return "Tried to create an issue template at .github/pull_request_template.md but was unable to."
 
 
 class GitHubCheckProvider(CheckProvider):
@@ -60,10 +96,12 @@ class GitHubCheckProvider(CheckProvider):
         )
 
         yield CheckResult(
-            "GH001", Result.PASSED if has_issue_template else Result.FAILED
+            "GH001", Result.PASSED if has_issue_template else Result.FAILED,
+            fix=AddIssueTemplateFix()
         )
         yield CheckResult(
-            "GH002", Result.PASSED if has_pull_request_template else Result.FAILED
+            "GH002", Result.PASSED if has_pull_request_template else Result.FAILED,
+            fix=AddPullRequestTemplateFix()
         )
 
     def checks(self):
