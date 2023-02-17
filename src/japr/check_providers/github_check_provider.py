@@ -1,33 +1,32 @@
 from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
 from git import InvalidGitRepositoryError, Repo
+import japr.template_util
 import os
 
 
 class AddIssueTemplateFix(CheckFix):
     def fix(self, directory, _):
-        os.makedirs(os.path.join(directory, ".github"), exist_ok=True)
-        with open(os.path.join(directory, ".github/issue_template.md"), 'w') as f:
-            # TODO provide a better template
-            f.write("""# Issue Title
-This is an example issue template. You should fill this in with helpful headings and example content that will help you diagnose problems or design requsted features.""")
+        os.makedirs(os.path.join(directory, ".github/ISSUE_TEMPLATE"), exist_ok=True)
+        with open(os.path.join(directory, ".github/ISSUE_TEMPLATE/bug.md"), 'w') as f:
+            f.write(japr.template_util.template("bug_report_issue_template.md", directory))
+        with open(os.path.join(directory, ".github/ISSUE_TEMPLATE/feature_request.md"), 'w') as f:
+            f.write(japr.template_util.template("feature_request_issue_template.md", directory))
         return True
 
     @property
     def success_message(self):
-        return "Created an issue template at .github/issue_template.md from a template. You should add your own content to it."
+        return "Created issue templates at .github/ISSUE_TEMPLATE/bug_report.md and .github/ISSUE_TEMPLATE/feature_request.md from a template. You should add your own content to it."
 
     @property
     def failure_message(self):
-        return "Tried to create an issue template at .github/issue_template.md but was unable to."
+        return "Tried to create an issue template at .github/ISSUE_TEMPLATE/bug_report.md and .github/ISSUE_TEMPLATE/feature_request.md but was unable to."
 
 
 class AddPullRequestTemplateFix(CheckFix):
     def fix(self, directory, _):
         os.makedirs(os.path.join(directory, ".github"), exist_ok=True)
         with open(os.path.join(directory, ".github/pull_request_template.md"), 'w') as f:
-            # TODO provide a better template
-            f.write("""# Pull Request Title
-This is an example pull request template. You should fill this in with helpful headings and example content that will help to understand the purpose of this pull request and what other work needs to be done in order to accept it.""")
+            f.write(japr.template_util.template("pull_request_template.md", directory))
         return True
 
     @property

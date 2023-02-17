@@ -1,13 +1,12 @@
 from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
+import japr.template_util
 import os
 
 
 class AddContributorFix(CheckFix):
     def fix(self, directory, _):
         with open(os.path.join(directory, "CONTRIBUTING.md"), 'w') as f:
-            # TODO provide a better template like one from https://bttger.github.io/contributing-gen-web/
-            f.write("""# Contributing
-This is an example contributing document. You should fill this in with guidelines on how to contribute to this project. See https://bttger.github.io/contributing-gen-web/ for a template""")
+            f.write(japr.template_util.template("CONTRIBUTING.md", directory))
         return True
 
     @property

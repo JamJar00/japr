@@ -68,7 +68,6 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
                 )
             start = time.time()
 
-    # TODO Group issues by ID for multiple files
     if is_profile and not is_json:
         print(
             "Profile mode is enabled. Showing all checks performed, not just failed"

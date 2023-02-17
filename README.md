@@ -88,6 +88,7 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Allow enabling checks even when project type usually ignores it
 - Allow configuring ignore rules only for certain files
 - Fixes for more checks and stabilise
+- Group issues together by file path
 
 ### Checks
 - Audit all checks
@@ -97,6 +98,7 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - More languages
 - Is it a recognised license? Appropriate for the type of project?
 - Copyright headers?
+- Code of Conduct file - https://bttger.github.io/contributing-gen-web/
 
 #### Python
 - Support Flit & Setuptools as other dependency managers
