@@ -6,8 +6,9 @@ SKIP_DIRECTORIES = [
     # You know why this is skipped...
     "node_modules",
     # Stores git history as lots and lots of files we don't want to parse through
-    ".git"
+    ".git",
 ]
+
 
 def _walk(base_path):
     with os.scandir(base_path) as scan:
@@ -19,7 +20,11 @@ def _walk(base_path):
 
 
 def find_files_with_extension(base_path, extension):
-    yield from (obj_path for obj_name, obj_path in _walk(base_path) if obj_name.endswith(extension))
+    yield from (
+        obj_path
+        for obj_name, obj_path in _walk(base_path)
+        if obj_name.endswith(extension)
+    )
 
 
 def find_files_with_name(base_path, name):

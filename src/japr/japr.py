@@ -10,7 +10,14 @@ import yaml
 PROJECT_TYPES = ["open-source", "inner-source", "team", "personal"]
 
 
-def _check_directory(directory, project_type, is_summary=False, is_profile=False, fix=False, is_json=False):
+def _check_directory(
+    directory,
+    project_type,
+    is_summary=False,
+    is_profile=False,
+    fix=False,
+    is_json=False,
+):
     directory = os.path.abspath(directory)
     if not os.path.isdir(directory):
         print(f"'{directory}' is not a valid directory so cannot be checked")
@@ -111,13 +118,24 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
 
     if is_json:
         out = {
-                "results": [{"id": result.id, "result": str(result.result), "filePath": result.file_path, "fixAvailable": result.fix is not None, "severity": str(check.severity), "reason": check.reason, "advice": check.advice} for (result, check, _) in issues],
-                "score": score,
-                "passed": passed,
-                "failed": failed,
-                "cannot_run": cannot_run,
-                "suppressed": suppressed
+            "results": [
+                {
+                    "id": result.id,
+                    "result": str(result.result),
+                    "filePath": result.file_path,
+                    "fixAvailable": result.fix is not None,
+                    "severity": str(check.severity),
+                    "reason": check.reason,
+                    "advice": check.advice,
                 }
+                for (result, check, _) in issues
+            ],
+            "score": score,
+            "passed": passed,
+            "failed": failed,
+            "cannot_run": cannot_run,
+            "suppressed": suppressed,
+        }
         print(json.dumps(out, indent=2))
     else:
         for result, check, profile_time in issues:
@@ -200,11 +218,10 @@ def _check_directory(directory, project_type, is_summary=False, is_profile=False
     if fix:
         for result, check, profile_time in issues:
             if result.result == Result.FAILED and result.fix is not None:
-                if (result.fix.fix(directory, result.file_path)):
+                if result.fix.fix(directory, result.file_path):
                     print(f"\N{white heavy check mark} {result.fix.success_message}")
                 else:
                     print(f"\N{cross mark} {result.fix.failure_message}")
-
 
     return failed == 0
 
@@ -235,12 +252,17 @@ def cli(args=None):
     group.add_argument(
         "--fix", help="experimentally try to fix issues found", action="store_true"
     )
-    group.add_argument(
-        "--json", help="output results as JSON", action="store_true"
-    )
+    group.add_argument("--json", help="output results as JSON", action="store_true")
 
     args = parser.parse_args(args)
-    if _check_directory(args.directory, args.project_type, args.summary, args.profile, args.fix, args.json):
+    if _check_directory(
+        args.directory,
+        args.project_type,
+        args.summary,
+        args.profile,
+        args.fix,
+        args.json,
+    ):
         quit(0)
     else:
         quit(1)

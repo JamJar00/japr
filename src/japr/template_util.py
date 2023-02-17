@@ -10,6 +10,7 @@ def _convert_ssh_to_http(url):
         return re.sub(r"^.+@(.+):(.+?)(\.git)?$", r"https://\1/\2", url)
     return url
 
+
 def template(template_file, directory):
     env = Environment(
         loader=PackageLoader("japr"),
@@ -27,8 +28,11 @@ def template(template_file, directory):
         github_remote_url = None
 
     vars = {
-        "project_name": os.path.split(directory)[1].title().replace("-", " ").replace("_", " "),
-        "github_remote_url": github_remote_url
+        "project_name": os.path.split(directory)[1]
+        .title()
+        .replace("-", " ")
+        .replace("_", " "),
+        "github_remote_url": github_remote_url,
     }
 
     return template.render(vars)

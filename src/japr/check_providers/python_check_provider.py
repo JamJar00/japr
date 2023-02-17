@@ -59,8 +59,12 @@ class PythonCheckProvider(CheckProvider):
         return "Python"
 
     def test(self, directory):
-        requirements_txts = list(japr.util.find_files_with_name(directory, "requirements.txt"))
-        pyproject_tomls = list(japr.util.find_files_with_name(directory, "pyproject.toml"))
+        requirements_txts = list(
+            japr.util.find_files_with_name(directory, "requirements.txt")
+        )
+        pyproject_tomls = list(
+            japr.util.find_files_with_name(directory, "pyproject.toml")
+        )
         pipfiles = list(japr.util.find_files_with_name(directory, "Pipfile"))
         setup_pys = list(japr.util.find_files_with_name(directory, "setup.py"))
         setup_cfgs = list(japr.util.find_files_with_name(directory, "setup.cfg"))

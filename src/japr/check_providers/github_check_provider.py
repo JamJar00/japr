@@ -7,10 +7,18 @@ import os
 class AddIssueTemplateFix(CheckFix):
     def fix(self, directory, _):
         os.makedirs(os.path.join(directory, ".github/ISSUE_TEMPLATE"), exist_ok=True)
-        with open(os.path.join(directory, ".github/ISSUE_TEMPLATE/bug.md"), 'w') as f:
-            f.write(japr.template_util.template("bug_report_issue_template.md", directory))
-        with open(os.path.join(directory, ".github/ISSUE_TEMPLATE/feature_request.md"), 'w') as f:
-            f.write(japr.template_util.template("feature_request_issue_template.md", directory))
+        with open(os.path.join(directory, ".github/ISSUE_TEMPLATE/bug.md"), "w") as f:
+            f.write(
+                japr.template_util.template("bug_report_issue_template.md", directory)
+            )
+        with open(
+            os.path.join(directory, ".github/ISSUE_TEMPLATE/feature_request.md"), "w"
+        ) as f:
+            f.write(
+                japr.template_util.template(
+                    "feature_request_issue_template.md", directory
+                )
+            )
         return True
 
     @property
@@ -25,7 +33,9 @@ class AddIssueTemplateFix(CheckFix):
 class AddPullRequestTemplateFix(CheckFix):
     def fix(self, directory, _):
         os.makedirs(os.path.join(directory, ".github"), exist_ok=True)
-        with open(os.path.join(directory, ".github/pull_request_template.md"), 'w') as f:
+        with open(
+            os.path.join(directory, ".github/pull_request_template.md"), "w"
+        ) as f:
             f.write(japr.template_util.template("pull_request_template.md", directory))
         return True
 
@@ -95,12 +105,14 @@ class GitHubCheckProvider(CheckProvider):
         )
 
         yield CheckResult(
-            "GH001", Result.PASSED if has_issue_template else Result.FAILED,
-            fix=AddIssueTemplateFix()
+            "GH001",
+            Result.PASSED if has_issue_template else Result.FAILED,
+            fix=AddIssueTemplateFix(),
         )
         yield CheckResult(
-            "GH002", Result.PASSED if has_pull_request_template else Result.FAILED,
-            fix=AddPullRequestTemplateFix()
+            "GH002",
+            Result.PASSED if has_pull_request_template else Result.FAILED,
+            fix=AddPullRequestTemplateFix(),
         )
 
     def checks(self):

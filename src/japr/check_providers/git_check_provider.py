@@ -2,23 +2,12 @@ from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 from git import InvalidGitRepositoryError, Repo
 import os
 
-IDE_DIRECTORIES = [
-    ".vs",      # Visual Studio
-    ".idea",    # Intellij
-    ".settings" # Eclipse
-]
+IDE_DIRECTORIES = [".vs", ".idea", ".settings"]  # Visual Studio  # Intellij  # Eclipse
 
-IDE_FILES = [
-    ".classpath", # Eclipse
-    ".project"
-]
+IDE_FILES = [".classpath", ".project"]  # Eclipse
 
-IDE_FILE_EXTENSIONS = [
-    "swp",     # Vim
-    "iml",     # Intellij
-    "iws",
-    "ipr"
-]
+IDE_FILE_EXTENSIONS = ["swp", "iml", "iws", "ipr"]  # Vim  # Intellij
+
 
 class GitCheckProvider(CheckProvider):
     def name(self):
@@ -54,12 +43,15 @@ class GitCheckProvider(CheckProvider):
                 yield CheckResult("GI005", Result.PASSED)
 
             ide_paths = [
-               f.path
-               for f in repo.tree("HEAD").list_traverse()
-               if (f.type == "tree" and f.name in IDE_DIRECTORIES)
-               or (f.type == "blob" and f.name in IDE_FILES)
-               or (f.type == "blob" and os.path.splitext(f.name)[1] in IDE_FILE_EXTENSIONS)
-           ]
+                f.path
+                for f in repo.tree("HEAD").list_traverse()
+                if (f.type == "tree" and f.name in IDE_DIRECTORIES)
+                or (f.type == "blob" and f.name in IDE_FILES)
+                or (
+                    f.type == "blob"
+                    and os.path.splitext(f.name)[1] in IDE_FILE_EXTENSIONS
+                )
+            ]
             if len(ide_paths) != 0:
                 for ide_path in ide_paths:
                     yield CheckResult("GI006", Result.FAILED, ide_path)

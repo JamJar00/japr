@@ -5,7 +5,7 @@ import os
 
 class AddContributorFix(CheckFix):
     def fix(self, directory, _):
-        with open(os.path.join(directory, "CONTRIBUTING.md"), 'w') as f:
+        with open(os.path.join(directory, "CONTRIBUTING.md"), "w") as f:
             f.write(japr.template_util.template("CONTRIBUTING.md", directory))
         return True
 
