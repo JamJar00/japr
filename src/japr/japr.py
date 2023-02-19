@@ -10,6 +10,110 @@ import yaml
 
 PROJECT_TYPES = ["open-source", "inner-source", "team", "personal"]
 
+def _print_result(result, check, profile_time, suppressed_checks, is_summary, is_profile):
+    if (
+        result.result == Result.FAILED and result.id not in suppressed_checks
+    ) or is_profile:
+        # Build up components then display for code clarity
+        if result.result == Result.FAILED:
+            emoji_block = "\N{cross mark}"
+        elif result.result == Result.PASSED:
+            emoji_block = "\N{white heavy check mark}"
+        elif result.result == Result.PRE_REQUISITE_CHECK_FAILED:
+            emoji_block = "\N{white question mark ornament}"
+        else:
+            emoji_block = "\N{heavy minus sign}"
+
+        if check.severity == Severity.HIGH:
+            severity_color = "\033[1;31m"
+        elif check.severity == Severity.MEDIUM:
+            severity_color = "\033[1;33m"
+        else:
+            severity_color = "\033[37m"
+
+        profile_block = (str(round(profile_time * 1000)) + "ms").ljust(8)
+
+        if result.file_path is not None:
+            file_block = f"[{result.file_path}] "
+        else:
+            file_block = ""
+
+        if result.fix is not None:
+            fix_block = f" - A fix is available \N{wrench}"
+        else:
+            fix_block = ""
+
+        if is_summary:
+            print(
+                f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
+                f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
+                f"{fix_block}"
+            )
+        elif is_profile:
+            print(
+                f"{emoji_block} {severity_color}{check.severity.name.ljust(6)}\033[0;0m"
+                f" - {profile_block} - \033[1m{check.id}\033[0;0m"
+                f" {file_block}{check.reason}{fix_block}"
+            )
+        else:
+            print(
+                f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
+                f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
+                f"{fix_block}"
+            )
+            print()
+            print(check.advice)
+            print()
+            print("-" * 10)
+
+def _print_fix_result(result):
+    if result.is_fixed:
+        print(f"\N{white heavy check mark} {result.fix.success_message}")
+    else:
+        print(f"\N{cross mark} {result.fix.failure_message}")
+
+def _print_json(issues, score, passed, failed, cannot_run, suppressed, fixed, suppressed_checks):
+    out = {
+        "results": [
+            {
+                "id": result.id,
+                "result": str(result.result),
+                "filePath": result.file_path,
+                "isFixAvailable": result.fix is not None,
+                "severity": str(check.severity),
+                "reason": check.reason,
+                "advice": check.advice,
+                "isSuppressed": result.id in suppressed_checks,
+                "isFixed": result.is_fixed,
+            }
+            for (result, check, _) in issues
+        ],
+        "score": score,
+        "passed": passed,
+        "failed": failed,
+        "cannot_run": cannot_run,
+        "suppressed": suppressed,
+        "fixed": fixed,
+    }
+    print(json.dumps(out, indent=2))
+
+def _print_summary(score, passed, failed, cannot_run, suppressed, fixed):
+    print(
+        "\033[1mProject score: "
+        + "\N{glowing star}" * score
+        + "\N{heavy minus sign}" * (5 - score)
+        + "\033[0;0m"
+    )
+
+    print(
+        f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed:"
+        f" {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}, Suppressed"
+        f" {suppressed}\033[0;0m"
+    )
+
+    if score == 5:
+        print()
+        print("\033[1mCongratulations on a fantastic score \U0001F389\033[0;0m")
 
 def _check_directory(
     directory,
@@ -72,7 +176,15 @@ def _check_directory(
             end = time.time()
             try:
                 if project_type in checks[result.id].project_types:
-                    issues.append((result, checks[result.id], end - start))
+                    check = checks[result.id]
+                    profile_time = end - start
+                    issues.append((result, check, profile_time))
+                    if not is_json:
+                        _print_result(result, check, profile_time, suppressed_checks, is_summary, is_profile)
+                    if fix and result.result == Result.FAILED and result.fix is not None:
+                            result.is_fixed = result.fix.fix(directory, result.file_path)
+                            if not is_json:
+                                _print_fix_result(result)
             except KeyError:
                 raise Exception(
                     f"Check {result.id} is not defined in the"
@@ -116,123 +228,19 @@ def _check_directory(
     suppressed = len(
         [result for (result, _, _) in issues if result.id in suppressed_checks]
     )
-
-    fixed_results = {}
-    if fix:
-        for result, check, profile_time in issues:
-            if result.result == Result.FAILED and result.fix is not None:
-                fixed_results[result] = result.fix.fix(directory, result.file_path)
+    fixed = len(
+        [result for (result, _, _) in issues if result.is_fixed]
+    )
 
     if is_json:
-        out = {
-            "results": [
-                {
-                    "id": result.id,
-                    "result": str(result.result),
-                    "filePath": result.file_path,
-                    "fixAvailable": result.fix is not None,
-                    "severity": str(check.severity),
-                    "reason": check.reason,
-                    "advice": check.advice,
-                    "is_suppressed": result.id in suppressed_checks,
-                    "is_fixed": fixed_results[result],
-                }
-                for (result, check, _) in issues
-            ],
-            "score": score,
-            "passed": passed,
-            "failed": failed,
-            "cannot_run": cannot_run,
-            "suppressed": suppressed,
-        }
-        print(json.dumps(out, indent=2))
+        _print_json(issues, score, passed, failed, cannot_run, suppressed, fixed, suppressed_checks)
     else:
-        for result, check, profile_time in issues:
-            if (
-                result.result == Result.FAILED and result.id not in suppressed_checks
-            ) or is_profile:
-                # Build up components then display for code clarity
-                if result.result == Result.FAILED:
-                    emoji_block = "\N{cross mark}"
-                elif result.result == Result.PASSED:
-                    emoji_block = "\N{white heavy check mark}"
-                elif result.result == Result.PRE_REQUISITE_CHECK_FAILED:
-                    emoji_block = "\N{white question mark ornament}"
-                else:
-                    emoji_block = "\N{heavy minus sign}"
-
-                if check.severity == Severity.HIGH:
-                    severity_color = "\033[1;31m"
-                elif check.severity == Severity.MEDIUM:
-                    severity_color = "\033[1;33m"
-                else:
-                    severity_color = "\033[37m"
-
-                profile_block = (str(round(profile_time * 1000)) + "ms").ljust(8)
-
-                if result.file_path is not None:
-                    file_block = f"[{result.file_path}] "
-                else:
-                    file_block = ""
-
-                if result.fix is not None:
-                    fix_block = f" - A fix is available \N{wrench}"
-                else:
-                    fix_block = ""
-
-                if is_summary:
-                    print(
-                        f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
-                        f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
-                        f"{fix_block}"
-                    )
-                elif is_profile:
-                    print(
-                        f"{emoji_block} {severity_color}{check.severity.name.ljust(6)}\033[0;0m"
-                        f" - {profile_block} - \033[1m{check.id}\033[0;0m"
-                        f" {file_block}{check.reason}{fix_block}"
-                    )
-                else:
-                    print(
-                        f"{severity_color}{check.severity.name.ljust(6)}\033[0;0m -"
-                        f" \033[1m{check.id}\033[0;0m {file_block}{check.reason}"
-                        f"{fix_block}"
-                    )
-                    print()
-                    print(check.advice)
-                    print()
-                    print("-" * 10)
-
         print()
-        print(
-            "\033[1mProject score: "
-            + "\N{glowing star}" * score
-            + "\N{heavy minus sign}" * (5 - score)
-            + "\033[0;0m"
-        )
-
-        print(
-            f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed:"
-            f" {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}, Suppressed"
-            f" {suppressed}\033[0;0m"
-        )
-
-        if score == 5:
-            print()
-            print("\033[1mCongratulations on a fantastic score \U0001F389\033[0;0m")
-
-        if fix:
-            print()
-            for result in fixed_results:
-                if fixed_results[result]:
-                    print(f"\N{white heavy check mark} {result.fix.success_message}")
-                else:
-                    print(f"\N{cross mark} {result.fix.failure_message}")
-
+        _print_summary(score, passed, failed, cannot_run, suppressed, fixed)
         print()
 
     if fix:
-        return all(fixed_results[result] for result in fixed_results)
+        return all(result.is_fixed for (result, _, _) in issues)
     else:
         return failed == 0
 

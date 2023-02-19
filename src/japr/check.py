@@ -31,6 +31,7 @@ class CheckResult:
         self.result = result
         self.file_path = file_path
         self.fix = fix
+        self.is_fixed = None
 
 
 class CheckFix(ABC):
