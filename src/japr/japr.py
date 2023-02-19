@@ -27,20 +27,20 @@ def _check_directory(
         with open(os.path.join(directory, ".japr.yaml"), "r") as f:
             data = yaml.safe_load(f)
             try:
-                ignored_checks = [
+                suppressed_checks = [
                     override["id"]
                     for override in data["override"]
-                    if override["ignore"]
+                    if override["suppress"]
                 ]
             except KeyError:
-                ignored_checks = []
+                suppressed_checks = []
             if project_type is None:
                 try:
                     project_type = data["projectType"]
                 except KeyError:
                     project_type = None
     else:
-        ignored_checks = []
+        suppressed_checks = []
 
     if project_type is None:
         raise Exception("No project type specified")
@@ -75,12 +75,6 @@ def _check_directory(
                 )
             start = time.time()
 
-    if is_profile and not is_json:
-        print(
-            "Profile mode is enabled. Showing all checks performed, not just failed"
-            " ones"
-        )
-
     sev_bad_checks = sum(
         check.severity.value
         for (result, check, _) in issues
@@ -94,14 +88,14 @@ def _check_directory(
         [
             result
             for (result, _, _) in issues
-            if result.result == Result.PASSED and result.id not in ignored_checks
+            if result.result == Result.PASSED and result.id not in suppressed_checks
         ]
     )
     failed = len(
         [
             result
             for (result, _, _) in issues
-            if result.result == Result.FAILED and result.id not in ignored_checks
+            if result.result == Result.FAILED and result.id not in suppressed_checks
         ]
     )
     cannot_run = len(
@@ -109,11 +103,11 @@ def _check_directory(
             result
             for (result, _, _) in issues
             if result.result == Result.PRE_REQUISITE_CHECK_FAILED
-            and result.id not in ignored_checks
+            and result.id not in suppressed_checks
         ]
     )
     suppressed = len(
-        [result for (result, _, _) in issues if result.id in ignored_checks]
+        [result for (result, _, _) in issues if result.id in suppressed_checks]
     )
 
     if is_json:
@@ -127,6 +121,7 @@ def _check_directory(
                     "severity": str(check.severity),
                     "reason": check.reason,
                     "advice": check.advice,
+                    "is_suppressed": result.id in suppressed_checks,
                 }
                 for (result, check, _) in issues
             ],
@@ -140,7 +135,7 @@ def _check_directory(
     else:
         for result, check, profile_time in issues:
             if (
-                result.result == Result.FAILED and result.id not in ignored_checks
+                result.result == Result.FAILED and result.id not in suppressed_checks
             ) or is_profile:
                 # Build up components then display for code clarity
                 if result.result == Result.FAILED:

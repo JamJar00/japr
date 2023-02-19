@@ -54,7 +54,7 @@ If you need to suppress a check then you can add an `overrides` second to your c
 # .japr.yaml
 override:
   - id: CI001
-    ignore: true
+    suppress: true
 ```
 Be aware that the project's score is always calculated against the full ruleset no matter what you suppress so that the score is comparable across projects of the same type.
 
@@ -85,8 +85,8 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Deploy to PyPi
 - Tests, always need ~more~ tests
 - JSON output
-- Allow enabling checks even when project type usually ignores it
-- Allow configuring ignore rules only for certain files
+- Allow enabling checks even when project type usually suppresses it
+- Allow configuring suppressed rules only for certain files
 - Fixes for more checks and stabilise
 - Group issues together by file path
 
