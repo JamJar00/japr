@@ -1,5 +1,21 @@
-from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
+import japr.template_util
 import os
+
+
+class AddReadmeFix(CheckFix):
+    def fix(self, directory, _):
+        with open(os.path.join(directory, "README.md"), "w") as f:
+            f.write(japr.template_util.template("README.md", directory))
+        return True
+
+    @property
+    def success_message(self):
+        return "Created a README.md file in the root directory from a template. You should add your own content to it."
+
+    @property
+    def failure_message(self):
+        return "Tried to create a README.md file in the root directory but was unable to."
 
 
 class ReadmeCheckProvider(CheckProvider):
@@ -17,7 +33,8 @@ class ReadmeCheckProvider(CheckProvider):
             readme_path = None
 
         yield CheckResult(
-            "RE001", Result.PASSED if readme_path is not None else Result.FAILED
+            "RE001", Result.PASSED if readme_path is not None else Result.FAILED,
+            fix=AddReadmeFix()
         )
 
         if readme_path is not None:
@@ -60,7 +77,9 @@ class ReadmeCheckProvider(CheckProvider):
 - How do I install it?
 - How do I use it?
 - What configuration can be set?
-- How do I build the source code?""",
+- How do I build the source code?
+
+See https://www.makeareadme.com/ for further guidance""",
             ),
             Check(
                 "RE002",
