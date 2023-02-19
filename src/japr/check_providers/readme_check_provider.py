@@ -15,7 +15,9 @@ class AddReadmeFix(CheckFix):
 
     @property
     def failure_message(self):
-        return "Tried to create a README.md file in the root directory but was unable to."
+        return (
+            "Tried to create a README.md file in the root directory but was unable to."
+        )
 
 
 class ReadmeCheckProvider(CheckProvider):
@@ -33,8 +35,9 @@ class ReadmeCheckProvider(CheckProvider):
             readme_path = None
 
         yield CheckResult(
-            "RE001", Result.PASSED if readme_path is not None else Result.FAILED,
-            fix=AddReadmeFix()
+            "RE001",
+            Result.PASSED if readme_path is not None else Result.FAILED,
+            fix=AddReadmeFix(),
         )
 
         if readme_path is not None:
