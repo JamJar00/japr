@@ -3,6 +3,7 @@ from japr.check_providers import check_providers
 from japr.check import Result, Severity
 import json
 import os
+import sys
 import time
 import yaml
 
@@ -20,7 +21,10 @@ def _check_directory(
 ):
     directory = os.path.abspath(directory)
     if not os.path.isdir(directory):
-        print(f"'{directory}' is not a valid directory so cannot be checked")
+        print(
+            f"'{directory}' is not a valid directory so cannot be checked",
+            file=sys.stderr,
+        )
         return
 
     if os.path.isfile(os.path.join(directory, ".japr.yaml")):
@@ -43,12 +47,15 @@ def _check_directory(
         suppressed_checks = []
 
     if project_type is None:
-        raise Exception("No project type specified")
+        print("No project type specified. You can specify this with the -t flag or add to your .japr.yaml configuration file.", file=sys.stderr)
+        return
 
     if project_type not in PROJECT_TYPES:
-        raise Exception(
-            "Invalid project type. Must be one of " + ", ".join(PROJECT_TYPES)
+        print(
+            f"Invalid project type. Must be one of {', '.join(PROJECT_TYPES)}.",
+            file=sys.stderr,
         )
+        return
 
     if fix:
         is_summary = True
@@ -110,6 +117,12 @@ def _check_directory(
         [result for (result, _, _) in issues if result.id in suppressed_checks]
     )
 
+    fixed_results = {}
+    if fix:
+        for result, check, profile_time in issues:
+            if result.result == Result.FAILED and result.fix is not None:
+                fixed_results[result] = result.fix.fix(directory, result.file_path)
+
     if is_json:
         out = {
             "results": [
@@ -122,6 +135,7 @@ def _check_directory(
                     "reason": check.reason,
                     "advice": check.advice,
                     "is_suppressed": result.id in suppressed_checks,
+                    "is_fixed": fixed_results[result],
                 }
                 for (result, check, _) in issues
             ],
@@ -207,18 +221,20 @@ def _check_directory(
             print()
             print("\033[1mCongratulations on a fantastic score \U0001F389\033[0;0m")
 
-        print()
-
-    # TODO handle in JSON
-    if fix:
-        for result, check, profile_time in issues:
-            if result.result == Result.FAILED and result.fix is not None:
-                if result.fix.fix(directory, result.file_path):
+        if fix:
+            print()
+            for result in fixed_results:
+                if fixed_results[result]:
                     print(f"\N{white heavy check mark} {result.fix.success_message}")
                 else:
                     print(f"\N{cross mark} {result.fix.failure_message}")
 
-    return failed == 0
+        print()
+
+    if fix:
+        return all(fixed_results[result] for result in fixed_results)
+    else:
+        return failed == 0
 
 
 def cli(args=None):
