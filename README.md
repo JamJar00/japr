@@ -5,11 +5,8 @@ It's a linter that makes sure you install linters (and some other stuff)
 
 ![Screenshot of a report](/screenshot.png)
 
-** Japr is in prerelease and may change in drastic ways without warning **
-Please do try it in your projects, but just be aware!
-
 ## Installation
-Using pip (when released, we're not quite there yet):
+Using pip:
 ```bash
 pip install japr
 ```
