@@ -23,11 +23,18 @@ class AddIssueTemplateFix(CheckFix):
 
     @property
     def success_message(self):
-        return "Created issue templates at .github/ISSUE_TEMPLATE/bug_report.md and .github/ISSUE_TEMPLATE/feature_request.md from a template. You should add your own content to it."
+        return (
+            "Created issue templates at .github/ISSUE_TEMPLATE/bug_report.md and"
+            " .github/ISSUE_TEMPLATE/feature_request.md from a template. You should add"
+            " your own content to it."
+        )
 
     @property
     def failure_message(self):
-        return "Tried to create an issue template at .github/ISSUE_TEMPLATE/bug_report.md and .github/ISSUE_TEMPLATE/feature_request.md but was unable to."
+        return (
+            "Tried to create an issue template at .github/ISSUE_TEMPLATE/bug_report.md"
+            " and .github/ISSUE_TEMPLATE/feature_request.md but was unable to."
+        )
 
 
 class AddPullRequestTemplateFix(CheckFix):
@@ -41,11 +48,17 @@ class AddPullRequestTemplateFix(CheckFix):
 
     @property
     def success_message(self):
-        return "Created an issue template at .github/pull_request_template.md from a template. You should add your own content to it."
+        return (
+            "Created an issue template at .github/pull_request_template.md from a"
+            " template. You should add your own content to it."
+        )
 
     @property
     def failure_message(self):
-        return "Tried to create an issue template at .github/pull_request_template.md but was unable to."
+        return (
+            "Tried to create an issue template at .github/pull_request_template.md but"
+            " was unable to."
+        )
 
 
 class GitHubCheckProvider(CheckProvider):

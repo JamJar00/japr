@@ -11,11 +11,17 @@ class AddContributorFix(CheckFix):
 
     @property
     def success_message(self):
-        return "Created a CONTRIBUTING.md file in the root directory from a template. You should add your own content to it."
+        return (
+            "Created a CONTRIBUTING.md file in the root directory from a template. You"
+            " should add your own content to it."
+        )
 
     @property
     def failure_message(self):
-        return "Tried to create a CONTRIBUTING.md file in the root directory but was unable to."
+        return (
+            "Tried to create a CONTRIBUTING.md file in the root directory but was"
+            " unable to."
+        )
 
 
 class ContributingCheckProvider(CheckProvider):
@@ -44,7 +50,8 @@ class ContributingCheckProvider(CheckProvider):
                 Severity.MEDIUM,
                 ["open-source"],
                 (
-                    "Projects should have a CONTRIBUTING.md file describing how to contribute to the project"
+                    "Projects should have a CONTRIBUTING.md file describing how to"
+                    " contribute to the project"
                 ),
                 """Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way""",
             )

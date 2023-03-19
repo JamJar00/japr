@@ -11,7 +11,10 @@ class AddReadmeFix(CheckFix):
 
     @property
     def success_message(self):
-        return "Created a README.md file in the root directory from a template. You should add your own content to it."
+        return (
+            "Created a README.md file in the root directory from a template. You should"
+            " add your own content to it."
+        )
 
     @property
     def failure_message(self):

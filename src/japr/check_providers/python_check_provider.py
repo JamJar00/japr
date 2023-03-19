@@ -183,7 +183,10 @@ class PythonCheckProvider(CheckProvider):
                 "PY004",
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team", "personal"],
-                "Python projects using a dependency manager should have their lock files committed into Git",
+                (
+                    "Python projects using a dependency manager should have their lock"
+                    " files committed into Git"
+                ),
                 """When using a dependency manager for Python such as Poetry, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed.""",
             ),
         ]

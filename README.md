@@ -88,7 +88,6 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Group issues together by file path
 
 ### Checks
-- Audit all checks
 - Check lock files are checked into Git
 - Are linters in dev dependencies?
 - No TODOs anywhere, they should be tracked in issues

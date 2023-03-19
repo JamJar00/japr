@@ -132,14 +132,14 @@ class Japr:
 
         print(
             f"\033[1m\033[1;32mPassed: {passed}\033[0;0m, \033[1m\033[1;31mFailed:"
-            f" {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run}, Suppressed"
-            f" {suppressed}\033[0;0m"
+            f" {failed}\033[0;0m, \033[1m\033[1;37mCannot Run Yet: {cannot_run},"
+            f" Suppressed {suppressed}\033[0;0m"
         )
 
         if self.fix:
             print(
-                f"\033[1m\033[1;32mFixed: {fixed}\033[0;0m, \033[1m\033[1;31mFailed to Fix:"
-                f" {failed_to_fix}\033[0;0m"
+                f"\033[1m\033[1;32mFixed: {fixed}\033[0;0m, \033[1m\033[1;31mFailed to"
+                f" Fix: {failed_to_fix}\033[0;0m"
             )
 
         if score == 5:
@@ -180,7 +180,10 @@ class Japr:
 
         if project_type is None:
             print(
-                "No project type specified. You can specify this with the -t flag or add to your .japr.yaml configuration file.",
+                (
+                    "No project type specified. You can specify this with the -t flag"
+                    " or add to your .japr.yaml configuration file."
+                ),
                 file=sys.stderr,
             )
             return
@@ -224,9 +227,9 @@ class Japr:
                 except KeyError:
                     raise Exception(
                         f"Check {result.id} is not defined in the"
-                        f" {check_provider.name()} check provider but a result was returned"
-                        " for it. Ensure the result is returning the correct ID and the"
-                        " check is defined correctly in the provider."
+                        f" {check_provider.name()} check provider but a result was"
+                        " returned for it. Ensure the result is returning the correct"
+                        " ID and the check is defined correctly in the provider."
                     )
                 start = time.time()
 
