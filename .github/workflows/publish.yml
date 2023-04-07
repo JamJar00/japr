@@ -5,15 +5,58 @@ on:
 
 jobs:
   build:
+    name: Build & Push Python Package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - run: pip install poetry
-      - run: poetry install
+
+      - name: Poetry Install
+        run: poetry install
+
       #- run: poetry run pylama # Disabled for now as black and pylama have different line length abilities with docstrings
-      - run: poetry run black --check --preview .
-      - run: poetry build
-      - run: poetry publish
+
+      - name: Black Lint
+        run: poetry run black --check --preview .
+
+      - name: Build PyPi Package
+        run: poetry build
+
+      - name: Publish PyPi Package
+        run: poetry publish
+
+  build-and-push-docker-image:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Image & Push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: |
+            jamoyjamie/japr:${{ github.event.release.name }}
+            ghcr.io/jamjar00/japr:${{ github.event.release.name }}
