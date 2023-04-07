@@ -42,6 +42,8 @@ Select one of the following project types and pass on the command line via `-t`/
 | team         | A balanced ruleset designed for projects that belong to a single team                                                                                          |
 | personal     | A lightweight ruleset designed to tidy up personal projects                                                                                                    |
 
+![Animation of a report and a fix](/animation.gif)
+
 ### Configuration
 Configuration is done mostly through a `.japr.yaml` file in the root of your repository.
 ```yaml
