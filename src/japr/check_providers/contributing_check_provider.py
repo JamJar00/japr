@@ -53,6 +53,16 @@ class ContributingCheckProvider(CheckProvider):
                     "Projects should have a CONTRIBUTING.md file describing how to"
                     " contribute to the project"
                 ),
-                """Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way""",
+                """Create a CONTRIBUTING.md file in the root of the project and add content to describe to other users how they can contribute to the project in the most helpful way
+
+A good contributing guide should:
+- Explain how people can best ask questions
+- Explain how people can best report bugs or suggest enhancements
+- Explain how people can donate
+- Explain what the process is for making a pull request (e.g. does an issue need to exist before a pull request can be opened?)
+- Explain the standards expected of any pull requests
+- Explain any subtleties to contributing to the documentation
+- Explain how people can join your team or help contribute in a grander way
+""",
             )
         ]

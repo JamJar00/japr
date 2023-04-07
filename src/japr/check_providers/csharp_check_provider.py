@@ -75,6 +75,8 @@ class CSharpCheckProvider(CheckProvider):
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "C# projects should have a linter configured",
-                """C# projects should have a comprehensive linter configured such as StyleCop""",
+                """C# projects should have a comprehensive linter configured such as StyleCop in order to ensure a consistent code style is used across all files and by all contributors.
+
+Having a consistent style helps ensure readability and ease of understanding for any outsider looking into the project's code. Linters can also improve the stability of the code by catching mistakes before the code is published.""",
             )
         ]

@@ -74,18 +74,15 @@ The following table tracks the level of support for each language. Many language
 | Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn |
 
 ## Experimental Automatic Fixes
-Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental and should never be used on serious project as it could cause serios damage to the project**
+Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental and should never be used on serious project as it could cause serious damage to the project**
 
 ## TODO
 - Support code blocks in the advice section
 - Deploy to Docker Hub
-- Deploy to PyPi
 - Tests, always need ~more~ tests
-- JSON output
 - Allow enabling checks even when project type usually suppresses it
 - Allow configuring suppressed rules only for certain files
 - Fixes for more checks and stabilise
-- Group issues together by file path
 
 ### Checks
 - Check lock files are checked into Git

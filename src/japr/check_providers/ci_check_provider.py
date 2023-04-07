@@ -48,8 +48,8 @@ class CiCheckProvider(CheckProvider):
 - Lint the code
 - Build the code
 - Run all tests
-- Deploy any built artifacts like NuGet packages/PyPI packages
+- Deploy any artifacts like NuGet packages/PyPI packages
 
-If at any point a step fails it should block the build""",
+If you are using GitHub and would like to get started with it, you can learn how to use it here: https://docs.github.com/en/actions/quickstart""",
             )
         ]

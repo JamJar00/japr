@@ -96,7 +96,9 @@ class JavascriptCheckProvider(CheckProvider):
                 Severity.MEDIUM,
                 ["open-source", "inner-source", "team"],
                 "Javascript projects should have a linter configured",
-                """Javascript projects should have a comprehensive linter configured such as ESLint""",
+                """Javascript projects should have a comprehensive linter configured such as ESLint in order to ensure a consistent code style is used across all files and by all contributors.
+
+Having a consistent style helps ensure readability and ease of understanding for any outsider looking into the project's code. Linters can also improve the stability of the code by catching mistakes before the code is published.""",
             ),
             Check(
                 "JS004",

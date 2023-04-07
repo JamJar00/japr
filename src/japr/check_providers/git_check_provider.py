@@ -75,7 +75,7 @@ class GitCheckProvider(CheckProvider):
                 "Projects should be tracked in Git version control",
                 """All projects, even the smallest personal projects benefit from being tracked in Git as it provides branch management, backups and history to your project.
 
-Run `git init` in this project to setup Git and then make a commit""",
+Run `git init` in this project to setup Git and then make a commit.""",
             ),
             Check(
                 "GI002",
@@ -86,8 +86,8 @@ Run `git init` in this project to setup Git and then make a commit""",
 
 Setup a Git repository on your favourite Git service (e.g. GitHub) and follow the instructions to add a remote to an existing project. The instructions will likely look like:
 
-git remote add origin <your url>
-git push origin master""",
+git remote add origin <your repository url>
+git push origin main""",
             ),
             Check(
                 "GI003",
@@ -99,16 +99,7 @@ git push origin master""",
                 ),
                 """This project has a branch named 'master' however it is now recommended to use a branch named 'main' to avoid culturally inappropriate language.
 
-You can switch your primary branch using:
-
-git checkout master
-git pull origin master
-git switch -c main
-git push origin main
-git branch -d master
-git push :master
-
-You may also need to make changes in your remote to change the default branch""",
+The following guide does a good job or describing the process and providing solutions to any issues you may have with this: https://www.git-tower.com/learn/git/faq/git-rename-master-to-main""",
             ),
             Check(
                 "GI004",
@@ -117,7 +108,7 @@ You may also need to make changes in your remote to change the default branch"""
                 "Projects in Git should have a .gitignore file",
                 """.gitignore files help you avoid committing unwanted files into Git such as binaries or build artifacts. You should create a .gitignore file for this project.
 
-You can find comprehensive examples for your chosen language here https://github.com/github/gitignore""",
+You can find comprehensive examples for your chosen language here: https://github.com/github/gitignore""",
             ),
             Check(
                 "GI005",
