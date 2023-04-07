@@ -16,6 +16,11 @@ Using [pipx](https://github.com/pypa/pipx) which will get you the latest, bleedi
 pipx install git+https://github.com/JamJar00/japr
 ```
 
+Or you can use Docker:
+```bash
+docker run --rm -v $(pwd):/app JamJar00/japr
+```
+
 ## Usage
 ```bash
 japr <directory> -t <project-type>
