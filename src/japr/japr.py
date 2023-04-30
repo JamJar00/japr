@@ -99,7 +99,7 @@ class Japr:
             "results": [
                 {
                     "id": result.id,
-                    "result": str(result.result),
+                    "result": result.result.name,
                     "filePath": result.file_path,
                     "isFixAvailable": result.fix is not None,
                     "severity": str(check.severity),
