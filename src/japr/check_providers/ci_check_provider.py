@@ -28,7 +28,7 @@ class CiCheckProvider(CheckProvider):
             if os.path.isfile(os.path.join(directory, path)):
                 ci_path = os.path.join(directory, path)
         if os.path.isdir(os.path.join(directory, ".github/workflows/")):
-            ci_path = os.path.join(directory, ".buildkite/pipeline.yml")
+            ci_path = os.path.join(directory, ".github/workflows/")
 
         yield CheckResult(
             "CI001", Result.PASSED if ci_path is not None else Result.FAILED

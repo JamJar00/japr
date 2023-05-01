@@ -77,6 +77,8 @@ class PythonCheckProvider(CheckProvider):
         if len(requirements_txts) != 0:
             for requirements_txt in requirements_txts:
                 yield CheckResult("PY001", Result.FAILED, requirements_txt)
+        elif len(pyproject_tomls) != 0 or len(pipfiles) != 0:
+            yield CheckResult("PY001", Result.PASSED)
         else:
             yield CheckResult("PY001", Result.NOT_APPLICABLE)
 
@@ -153,6 +155,8 @@ class PythonCheckProvider(CheckProvider):
                 yield CheckResult("PY003", Result.FAILED, setup_py)
             for setup_cfg in setup_cfgs:
                 yield CheckResult("PY003", Result.FAILED, setup_cfg)
+        elif len(pyproject_tomls) != 0 or len(pipfiles) != 0:
+            yield CheckResult("PY003", Result.PASSED)
         else:
             yield CheckResult("PY003", Result.NOT_APPLICABLE)
 

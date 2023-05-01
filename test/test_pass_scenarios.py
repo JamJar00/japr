@@ -4,17 +4,17 @@ import subprocess
 
 
 def pytest_generate_tests(metafunc):
-    scenarios = os.listdir("test/scenarios/failures")
+    scenarios = os.listdir("test/scenarios/passes")
     metafunc.parametrize("scenario", scenarios)
 
 
-def test_scenario_fails_correct_rule(scenario):
+def test_scenario_passes_correct_rule(scenario):
     result = subprocess.run(
         [
             "poetry",
             "run",
             "japr",
-            "test/scenarios/failures/" + scenario,
+            "test/scenarios/passes/" + scenario,
             "--json",
             "-t",
             "open-source",
@@ -29,5 +29,5 @@ def test_scenario_fails_correct_rule(scenario):
     assert any(
         test
         for test in result_json["results"]
-        if test["id"] == scenario_id and test["result"] == "FAILED"
+        if test["id"] == scenario_id and test["result"] == "PASSED"
     )

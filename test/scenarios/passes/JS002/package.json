@@ -1,0 +1,8 @@
+{
+  "name": "js002",
+  "version": "1.0.0",
+  "author": "Jamie Read <hey@jread.dev>",
+  "devDependencies": {
+    "eslint": "^8.39.0"
+  }
+}

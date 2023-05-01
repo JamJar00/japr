@@ -23,6 +23,7 @@ def _extract_dependencies_from_csproj(file):
             for reference in data.findall("/ItemGroup/PackageReference")
         ]
     except KeyError:
+        print("ERROR")
         dependencies = []
 
     return set(dependencies)

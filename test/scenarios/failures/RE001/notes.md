@@ -1,2 +1,2 @@
 # RE001
-This test project has no READMD.md file.
+This test project has no README.md file.
