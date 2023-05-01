@@ -90,6 +90,7 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Allow enabling checks even when project type usually suppresses it
 - Allow configuring suppressed rules only for certain files
 - Fixes for more checks and stabilise
+- Fix not finding git repo if repo root is a parent directory
 
 ### Checks
 - Check lock files are checked into Git
@@ -105,6 +106,10 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
     https://peps.python.org/pep-0621/
 - No Python 2
 
+#### C#
+- Nullable should be set
+- TreatWarningsAsErrors should be set
+
 #### GitHub
 - Pull request templates/issue templates should have YAML front matter
 - Issue templates should be in the .github folder
@@ -114,6 +119,11 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
   - Versions in project files match latest git tag
     - Might need thought for cases where the version has been bumped but the tag hasn't been pushed yet
 - Integrate with GitHub?
+
+### Tests
+- Git provider
+- JS/Python lock files in git
+
 
 ## Rules
 ### Readme
@@ -172,4 +182,3 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 |----|----------|---------------------------|-------------|--------|
 | JS002 | Medium | open-source, inner-source, team | Javascript projects should have a linter configured | Javascript projects should have a comprehensive linter configured such as ESLint |
 | JS004 | Medium | open-source, inner-source, team, personal | Javascript projects should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
-

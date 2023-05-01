@@ -24,6 +24,9 @@ jobs:
       - name: Black Lint
         run: poetry run black --check --preview .
 
+      - name: Test
+        run: poetry run pytest
+
       - name: Build PyPi Package
         run: poetry build
 
