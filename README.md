@@ -81,9 +81,27 @@ The following table tracks the level of support for each language. Many language
 | Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn |
 
 ## Experimental Automatic Fixes
-Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental and should never be used on serious project as it could cause serious damage to the project**
+Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental**
 
-## TODO
+## Development
+Pull requsts are welcome. Please read [the contributing guide first](./CONTRIBUTING.md).
+
+Building and running Japr from source should be relatively easy. Here are some of the commands you'll need:
+```bash
+# Get dependencies and venvs setup
+poetry install
+
+# Run Japr
+poetry run japr
+
+# Run the test suite
+poetry run pytest
+
+# Format your code
+poetry run black .
+```
+
+### TODO
 - Support code blocks in the advice section
 - Deploy to Docker Hub
 - Tests, always need _more_ tests
@@ -92,7 +110,7 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Fixes for more checks and stabilise
 - Fix not finding git repo if repo root is a parent directory
 
-### Checks
+#### Checks
 - Check lock files are checked into Git
 - Are linters in dev dependencies?
 - No TODOs anywhere, they should be tracked in issues
@@ -101,22 +119,22 @@ Japr can automatically fix some issues when supplied the `--fix` flag. **This fu
 - Copyright headers?
 - Code of Conduct file - https://bttger.github.io/contributing-gen-web/
 
-#### Python
+##### Python
 - Support Flit & Setuptools as other dependency managers
     https://peps.python.org/pep-0621/
 - No Python 2
 
-#### GitHub
+##### GitHub
 - Pull request templates/issue templates should have YAML front matter
 - Issue templates should be in the .github folder
 
-#### Sketchy Ideas
+##### Sketchy Ideas
 - Has git tags for versions?
   - Versions in project files match latest git tag
     - Might need thought for cases where the version has been bumped but the tag hasn't been pushed yet
 - Integrate with GitHub?
 
-### Tests
+#### Tests
 - Git provider
 - JS/Python lock files in git
 
