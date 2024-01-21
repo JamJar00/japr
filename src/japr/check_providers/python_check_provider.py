@@ -102,7 +102,7 @@ class PythonCheckProvider(CheckProvider):
                         os.path.split(pyproject_toml)[0], "poetry.lock"
                     )
                     is_file_committed = any(
-                        f.type == "blob" and f.path == lock_file
+                        f.type == "blob" and os.path.join(directory, f.path) == lock_file
                         for f in repo.tree("HEAD").list_traverse()
                     )
                     yield CheckResult(
