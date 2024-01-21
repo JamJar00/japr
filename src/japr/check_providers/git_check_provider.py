@@ -1,5 +1,6 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
-from git import InvalidGitRepositoryError, Repo
+from git import InvalidGitRepositoryError
+from git.repo import Repo
 import os
 
 IDE_DIRECTORIES = [".vs", ".idea", ".settings"]  # Visual Studio  # Intellij  # Eclipse

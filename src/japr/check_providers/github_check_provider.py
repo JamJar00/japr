@@ -1,5 +1,6 @@
 from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Severity
-from git import InvalidGitRepositoryError, Repo
+from git import InvalidGitRepositoryError
+from git.repo import Repo
 import japr.template_util
 import os
 

@@ -1,6 +1,7 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
 import japr.util
-from git import InvalidGitRepositoryError, Repo
+from git import InvalidGitRepositoryError
+from git.repo import Repo
 import toml
 import os
 
