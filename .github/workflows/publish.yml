@@ -31,7 +31,12 @@ jobs:
         run: poetry build
 
       - name: Publish PyPi Package
-        run: poetry publish
+        run: poetry build
+
+      - name: Upload PyPi Package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
 
   build-and-push-docker-image:
     name: Build & Push Docker Image
