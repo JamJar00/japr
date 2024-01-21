@@ -9,6 +9,7 @@ packages = [{include = "japr", from = "src"}]
 
 [tool.poetry.scripts]
 japr = "japr.japr:cli"
+generate_docs = "generate_ruleset_docs:generate"
 
 [tool.poetry.dependencies]
 python = "^3.10"

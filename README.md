@@ -74,11 +74,11 @@ Japr will work for projects of all languages however there are additional checks
 - Javascript
 
 The following table tracks the level of support for each language. Many languages also have additional checks not listed.
-|                       | Python         | C# | JS        |
-|-----------------------|----------------|----|-----------|
-| Linter setup          | ✅             | ✅ | ✅        |
-| Lock files in Git     | ✅             | ❌ | ✅        |
-| Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn |
+|                       | Python         | C# | JS        | Rust  |
+|-----------------------|----------------|----|-----------|-------|
+| Linter setup          | ✅             | ✅ | ✅        |       |
+| Lock files in Git     | ✅             | ❌ | ✅        | ✅    |
+| Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn | Cargo |
 
 ## Experimental Automatic Fixes
 Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental**
@@ -99,6 +99,9 @@ poetry run pytest
 
 # Format your code
 poetry run black .
+
+# Generate rule docs (and append to readme, delete the exsting rules first though otherwise you'll still have the old docs!)
+poetry generate_docs >> README.md
 ```
 
 ### TODO
@@ -197,3 +200,4 @@ poetry run black .
 |----|----------|---------------------------|-------------|--------|
 | JS002 | Medium | open-source, inner-source, team | Javascript projects should have a linter configured | Javascript projects should have a comprehensive linter configured such as ESLint in order to ensure a consistent code style is used across all files and by all contributors.</br></br>Having a consistent style helps ensure readability and ease of understanding for any outsider looking into the project's code. Linters can also improve the stability of the code by catching mistakes before the code is published. |
 | JS004 | Medium | open-source, inner-source, team, personal | Javascript projects should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
+

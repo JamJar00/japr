@@ -68,7 +68,7 @@ class GitHubCheckProvider(CheckProvider):
 
     def test(self, directory):
         try:
-            repo = Repo(directory)
+            repo = Repo(directory, search_parent_directories=True)
             github_is_origin = (
                 "origin" in repo.remotes and "github" in repo.remote("origin").url
             )

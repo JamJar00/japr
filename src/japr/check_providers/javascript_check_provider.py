@@ -41,7 +41,7 @@ class JavascriptCheckProvider(CheckProvider):
         package_jsons = list(japr.util.find_files_with_name(directory, "package.json"))
 
         try:
-            repo = Repo(directory)
+            repo = Repo(directory, search_parent_directories=True)
         except InvalidGitRepositoryError:
             repo = None  # Deal with later when we know what checks we're doing
 
@@ -71,7 +71,7 @@ class JavascriptCheckProvider(CheckProvider):
                     )
                     is_file_committed = any(
                         f.type == "blob"
-                        and os.path.join(directory, f.path)
+                        and os.path.join(repo.working_dir, f.path)
                         in [package_lock_file, yarn_lock_file, pnpm_lock_file]
                         for f in repo.tree("HEAD").list_traverse()
                     )

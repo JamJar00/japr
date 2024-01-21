@@ -71,7 +71,7 @@ class PythonCheckProvider(CheckProvider):
         setup_cfgs = list(japr.util.find_files_with_name(directory, "setup.cfg"))
 
         try:
-            repo = Repo(directory)
+            repo = Repo(directory, search_parent_directories=True)
         except InvalidGitRepositoryError:
             repo = None  # Deal with later when we know what checks we're doing
 
@@ -103,7 +103,7 @@ class PythonCheckProvider(CheckProvider):
                     )
                     is_file_committed = any(
                         f.type == "blob"
-                        and os.path.join(directory, f.path) == lock_file
+                        and os.path.join(repo.working_dir, f.path) == lock_file
                         for f in repo.tree("HEAD").list_traverse()
                     )
                     yield CheckResult(

@@ -16,7 +16,7 @@ class GitCheckProvider(CheckProvider):
 
     def test(self, directory):
         try:
-            repo = Repo(directory)
+            repo = Repo(directory, search_parent_directories=True)
             yield CheckResult("GI001", Result.PASSED)
 
             yield CheckResult(
