@@ -10,7 +10,8 @@ ENV PYTHONFAULTHANDLER=1 \
 
 RUN pip install "poetry==$POETRY_VERSION" \
   && apk update \
-  && apk add git
+  && apk add git \
+  && git config --global --add safe.directory '*'
 
 WORKDIR /japr
 COPY . /japr

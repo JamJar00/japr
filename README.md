@@ -18,7 +18,7 @@ pipx install git+https://github.com/JamJar00/japr
 
 Or you can use Docker:
 ```bash
-docker run --rm -v $(pwd):/app jamoyjamie/japr:v0.1.0
+docker run --rm -v $(pwd):/app jamoyjamie/japr:v1.0.1
 ```
 
 ## Usage
