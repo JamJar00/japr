@@ -37,6 +37,7 @@ class ContributingCheckProvider(CheckProvider):
                     os.path.isfile(os.path.join(directory, "CONTRIBUTING.md")),
                     os.path.isfile(os.path.join(directory, "CONTRIBUTING")),
                     os.path.isfile(os.path.join(directory, "CONTRIBUTING.txt")),
+                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.rst")),
                 ]
             )
             else Result.FAILED,
