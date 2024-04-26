@@ -74,11 +74,11 @@ Japr will work for projects of all languages however there are additional checks
 - Javascript
 
 The following table tracks the level of support for each language. Many languages also have additional checks not listed.
-|                       | Python         | C# | JS        | Rust  |
-|-----------------------|----------------|----|-----------|-------|
-| Linter setup          | ✅             | ✅ | ✅        |       |
-| Lock files in Git     | ✅             | ❌ | ✅        | ✅    |
-| Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn | Cargo |
+|                       | Python         | C# | JS        | Rust  | Terraform |
+|-----------------------|----------------|----|-----------|-------|-----------|
+| Linter setup          | ✅             | ✅ | ✅        |       | ❌        |
+| Lock files in Git     | ✅             | ❌ | ✅        | ✅    | ✅        |
+| Dependency Managers   | Poetry, Pipenv |    | NPM, Yarn | Cargo |           |
 
 ## Experimental Automatic Fixes
 Japr can automatically fix some issues when supplied the `--fix` flag. **This functionality is highly expermental**
@@ -201,3 +201,17 @@ poetry generate_docs >> README.md
 | JS002 | Medium | open-source, inner-source, team | Javascript projects should have a linter configured | Javascript projects should have a comprehensive linter configured such as ESLint in order to ensure a consistent code style is used across all files and by all contributors.</br></br>Having a consistent style helps ensure readability and ease of understanding for any outsider looking into the project's code. Linters can also improve the stability of the code by catching mistakes before the code is published. |
 | JS004 | Medium | open-source, inner-source, team, personal | Javascript projects should have their lock files committed into Git | When using a dependency manager for Javascript such as npm, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
 
+### Rust
+| ID | Severity | Enabled for Project Types | Description | Advice |
+|----|----------|---------------------------|-------------|--------|
+| RS004 | Medium | open-source, inner-source, team, personal | Rust projects should have their Cargo lock files committed into Git | When using Cargo for Rust, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
+
+### Terraform
+| ID | Severity | Enabled for Project Types | Description | Advice |
+|----|----------|---------------------------|-------------|--------|
+| TF004 | Medium | open-source, inner-source, team, personal | Terraform projects should have their Terraform lock files committed into Git | When using Terraform, the lock files should be comitted into Git. This ensures that all dependencies of packages are installed at the same version no matter when and on what machine the project is installed. |
+| TF005 | Medium | open-source, inner-source, team, personal | Terraform projects should not have their .terraform directory committed into Git | The .terraform directory contains binaries, thrid party modules and other things that are generated during a terraform init. This folder should not be committed into git. |
+| TF006 | High | open-source, inner-source, team, personal | Terraform state files should not be committed into git | Terraform state files can contain secrets and are stored unencrypted. These secrets can be easily leaked when stored in git. Additionally, terraform state in git does not provide a single source of truth nor state locking and so can cause major issues when used in teams.</br></br>Instead of storing state in git, use another terraform backend</br></br>See https://developer.hashicorp.com/terraform/language/settings/backends/configuration |
+| TF007 | Low | open-source, inner-source, team, personal | Terraform modules should contain a main.tf file | When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
+| TF008 | Low | open-source, inner-source, team, personal | Terraform modules should contain an outputs.tf file | When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
+| TF009 | Low | open-source, inner-source, team, personal | Terraform modules should contain a variables.tf file | When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
