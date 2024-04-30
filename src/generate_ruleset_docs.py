@@ -1,6 +1,7 @@
 """
 This script is designed to easily generate the documentation from the checks as configured in code
 """
+
 from japr.check_providers import check_providers
 
 

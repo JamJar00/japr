@@ -9,16 +9,18 @@ class LicenseCheckProvider(CheckProvider):
     def test(self, directory):
         yield CheckResult(
             "LI001",
-            Result.PASSED
-            if any(
-                [
-                    os.path.isfile(os.path.join(directory, "LICENSE.md")),
-                    os.path.isfile(os.path.join(directory, "LICENSE")),
-                    os.path.isfile(os.path.join(directory, "LICENSE.txt")),
-                    os.path.isfile(os.path.join(directory, "LICENSE.rst")),
-                ]
-            )
-            else Result.FAILED,
+            (
+                Result.PASSED
+                if any(
+                    [
+                        os.path.isfile(os.path.join(directory, "LICENSE.md")),
+                        os.path.isfile(os.path.join(directory, "LICENSE")),
+                        os.path.isfile(os.path.join(directory, "LICENSE.txt")),
+                        os.path.isfile(os.path.join(directory, "LICENSE.rst")),
+                    ]
+                )
+                else Result.FAILED
+            ),
         )
 
     def checks(self):

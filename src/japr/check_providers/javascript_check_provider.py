@@ -52,9 +52,11 @@ class JavascriptCheckProvider(CheckProvider):
                 )
                 yield CheckResult(
                     "JS002",
-                    Result.PASSED
-                    if len(set(_linters).intersection(dependencies))
-                    else Result.FAILED,
+                    (
+                        Result.PASSED
+                        if len(set(_linters).intersection(dependencies))
+                        else Result.FAILED
+                    ),
                     package_json,
                 )
 

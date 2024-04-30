@@ -31,16 +31,18 @@ class ContributingCheckProvider(CheckProvider):
     def test(self, directory):
         yield CheckResult(
             "CT001",
-            Result.PASSED
-            if any(
-                [
-                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.md")),
-                    os.path.isfile(os.path.join(directory, "CONTRIBUTING")),
-                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.txt")),
-                    os.path.isfile(os.path.join(directory, "CONTRIBUTING.rst")),
-                ]
-            )
-            else Result.FAILED,
+            (
+                Result.PASSED
+                if any(
+                    [
+                        os.path.isfile(os.path.join(directory, "CONTRIBUTING.md")),
+                        os.path.isfile(os.path.join(directory, "CONTRIBUTING")),
+                        os.path.isfile(os.path.join(directory, "CONTRIBUTING.txt")),
+                        os.path.isfile(os.path.join(directory, "CONTRIBUTING.rst")),
+                    ]
+                )
+                else Result.FAILED
+            ),
             fix=AddContributorFix(),
         )
 

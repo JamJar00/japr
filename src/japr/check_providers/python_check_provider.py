@@ -90,9 +90,11 @@ class PythonCheckProvider(CheckProvider):
                 )
                 yield CheckResult(
                     "PY002",
-                    Result.PASSED
-                    if len(set(_linters).intersection(dependencies))
-                    else Result.FAILED,
+                    (
+                        Result.PASSED
+                        if len(set(_linters).intersection(dependencies))
+                        else Result.FAILED
+                    ),
                     pyproject_toml,
                 )
 
@@ -124,9 +126,11 @@ class PythonCheckProvider(CheckProvider):
                 )
                 yield CheckResult(
                     "PY002",
-                    Result.PASSED
-                    if len(set(_linters).intersection(dependencies))
-                    else Result.FAILED,
+                    (
+                        Result.PASSED
+                        if len(set(_linters).intersection(dependencies))
+                        else Result.FAILED
+                    ),
                     pipfile,
                 )
 

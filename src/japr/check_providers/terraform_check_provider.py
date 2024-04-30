@@ -10,7 +10,9 @@ class TerraformCheckProvider(CheckProvider):
         return "Terraform"
 
     def test(self, directory):
-        terraform_locks = list(japr.util.find_files_with_name(directory, ".terraform.lock.hcl"))
+        terraform_locks = list(
+            japr.util.find_files_with_name(directory, ".terraform.lock.hcl")
+        )
 
         try:
             repo = Repo(directory, search_parent_directories=True)
@@ -42,7 +44,11 @@ class TerraformCheckProvider(CheckProvider):
                     )
                     yield CheckResult(
                         "TF005",
-                        Result.PASSED if not is_dot_terraform_dir_committed else Result.FAILED,
+                        (
+                            Result.PASSED
+                            if not is_dot_terraform_dir_committed
+                            else Result.FAILED
+                        ),
                         dot_terraform_dir,
                     )
                 else:
@@ -60,14 +66,17 @@ class TerraformCheckProvider(CheckProvider):
             yield CheckResult("TF004", Result.NOT_APPLICABLE)
             yield CheckResult("TF005", Result.NOT_APPLICABLE)
 
-        terraform_state_files = list(japr.util.find_files_with_extension(directory, ".tfstate"))
+        terraform_state_files = list(
+            japr.util.find_files_with_extension(directory, ".tfstate")
+        )
         if len(terraform_state_files) != 0:
             for terraform_state_file in terraform_state_files:
                 # Check state file is not committed into Git
                 if repo is not None:
                     is_file_committed = any(
                         f.type == "blob"
-                        and os.path.join(repo.working_dir, f.path) == terraform_state_file
+                        and os.path.join(repo.working_dir, f.path)
+                        == terraform_state_file
                         for f in repo.tree("HEAD").list_traverse()
                     )
                     yield CheckResult(
@@ -85,23 +94,31 @@ class TerraformCheckProvider(CheckProvider):
             yield CheckResult("TF006", Result.NOT_APPLICABLE)
 
         terraform_files = list(japr.util.find_files_with_extension(directory, ".tf"))
-        terraform_dirs = set([os.path.dirname(terraform_file) for terraform_file in terraform_files])
+        terraform_dirs = set(
+            [os.path.dirname(terraform_file) for terraform_file in terraform_files]
+        )
         if len(terraform_dirs) != 0:
             for terraform_dir in terraform_dirs:
                 # Check required files are present
-                has_main_file = os.path.join(terraform_dir, "main.tf") in terraform_files
+                has_main_file = (
+                    os.path.join(terraform_dir, "main.tf") in terraform_files
+                )
                 yield CheckResult(
                     "TF007",
                     Result.PASSED if has_main_file else Result.FAILED,
                     terraform_dir,
                 )
-                has_outputs_file = os.path.join(terraform_dir, "outputs.tf") in terraform_files
+                has_outputs_file = (
+                    os.path.join(terraform_dir, "outputs.tf") in terraform_files
+                )
                 yield CheckResult(
                     "TF008",
                     Result.PASSED if has_outputs_file else Result.FAILED,
                     terraform_dir,
                 )
-                has_variables_file = os.path.join(terraform_dir, "variables.tf") in terraform_files
+                has_variables_file = (
+                    os.path.join(terraform_dir, "variables.tf") in terraform_files
+                )
                 yield CheckResult(
                     "TF009",
                     Result.PASSED if has_variables_file else Result.FAILED,
@@ -111,7 +128,6 @@ class TerraformCheckProvider(CheckProvider):
             yield CheckResult("TF007", Result.NOT_APPLICABLE)
             yield CheckResult("TF008", Result.NOT_APPLICABLE)
             yield CheckResult("TF009", Result.NOT_APPLICABLE)
-
 
     def checks(self):
         return [

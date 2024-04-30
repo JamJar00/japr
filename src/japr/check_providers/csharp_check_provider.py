@@ -84,10 +84,12 @@ class CSharpCheckProvider(CheckProvider):
                 )
                 yield CheckResult(
                     "CS002",
-                    Result.PASSED
-                    if len(set(_linters).intersection(dependencies))
-                    or has_enabled_net_analyzers
-                    else Result.FAILED,
+                    (
+                        Result.PASSED
+                        if len(set(_linters).intersection(dependencies))
+                        or has_enabled_net_analyzers
+                        else Result.FAILED
+                    ),
                     cs_project,
                 )
                 has_enabled_nullable = _has_enabled_nullable_in_csproj(
@@ -105,9 +107,11 @@ class CSharpCheckProvider(CheckProvider):
                 )
                 yield CheckResult(
                     "CS004",
-                    Result.PASSED
-                    if has_enabled_treat_warnings_as_errors
-                    else Result.FAILED,
+                    (
+                        Result.PASSED
+                        if has_enabled_treat_warnings_as_errors
+                        else Result.FAILED
+                    ),
                     cs_project,
                 )
         else:

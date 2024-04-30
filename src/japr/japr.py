@@ -27,13 +27,13 @@ class Japr:
         ) or self.is_profile:
             # Build up components then display for code clarity
             if result.result == Result.FAILED:
-                emoji_block = "\N{cross mark}"
+                emoji_block = "\N{CROSS MARK}"
             elif result.result == Result.PASSED:
-                emoji_block = "\N{white heavy check mark}"
+                emoji_block = "\N{WHITE HEAVY CHECK MARK}"
             elif result.result == Result.PRE_REQUISITE_CHECK_FAILED:
-                emoji_block = "\N{white question mark ornament}"
+                emoji_block = "\N{WHITE QUESTION MARK ORNAMENT}"
             else:
-                emoji_block = "\N{heavy minus sign}"
+                emoji_block = "\N{HEAVY MINUS SIGN}"
 
             if check.severity == Severity.HIGH:
                 severity_color = "\033[1;31m"
@@ -50,7 +50,7 @@ class Japr:
                 file_block = ""
 
             if result.fix is not None:
-                fix_block = f" - A fix is available \N{wrench}"
+                fix_block = f" - A fix is available \N{WRENCH}"
             else:
                 fix_block = ""
 
@@ -79,9 +79,9 @@ class Japr:
 
     def _print_fix_result(self, result):
         if result.is_fixed:
-            print(f"\N{white heavy check mark} {result.fix.success_message}")
+            print(f"\N{WHITE HEAVY CHECK MARK} {result.fix.success_message}")
         else:
-            print(f"\N{cross mark} {result.fix.failure_message}")
+            print(f"\N{CROSS MARK} {result.fix.failure_message}")
 
     def _print_json(
         self,
@@ -125,8 +125,8 @@ class Japr:
     ):
         print(
             "\033[1mProject score: "
-            + "\N{glowing star}" * score
-            + "\N{heavy minus sign}" * (5 - score)
+            + "\N{GLOWING STAR}" * score
+            + "\N{HEAVY MINUS SIGN}" * (5 - score)
             + "\033[0;0m"
         )
 
@@ -144,7 +144,7 @@ class Japr:
 
         if score == 5:
             print()
-            print("\033[1mCongratulations on a fantastic score \U0001F389\033[0;0m")
+            print("\033[1mCongratulations on a fantastic score \U0001f389\033[0;0m")
 
     def check_directory(
         self,
