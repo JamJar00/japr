@@ -5,6 +5,18 @@ from git.repo import Repo
 import os
 
 
+def _is_subdir(path, directory):
+    path = os.path.realpath(path)
+    directory = os.path.realpath(directory)
+
+    relative = os.path.relpath(path, directory)
+
+    if relative.startswith(os.pardir):
+        return False
+    else:
+        return True
+
+
 class TerraformCheckProvider(CheckProvider):
     def name(self):
         return "Terraform"
@@ -124,10 +136,37 @@ class TerraformCheckProvider(CheckProvider):
                     Result.PASSED if has_variables_file else Result.FAILED,
                     terraform_dir,
                 )
+
+                # If we're a subdir of any other directory there should be a /modules/ directory between us
+                # Find closest parent from the other dirs
+                closest_parent = None
+                for other_dir in terraform_dirs:
+                    if terraform_dir != other_dir and _is_subdir(
+                        terraform_dir, other_dir
+                    ):
+                        if closest_parent is None or _is_subdir(
+                            closest_parent, other_dir
+                        ):
+                            closest_parent = other_dir
+
+                if closest_parent is not None:
+                    is_in_modules_dir = os.path.join(
+                        closest_parent, "modules"
+                    ) == os.path.dirname(terraform_dir)
+
+                    yield CheckResult(
+                        "TF010",
+                        Result.PASSED if is_in_modules_dir else Result.FAILED,
+                        terraform_dir,
+                    )
+                else:
+                    yield CheckResult("TF010", Result.NOT_APPLICABLE, terraform_dir)
+
         else:
             yield CheckResult("TF007", Result.NOT_APPLICABLE)
             yield CheckResult("TF008", Result.NOT_APPLICABLE)
             yield CheckResult("TF009", Result.NOT_APPLICABLE)
+            yield CheckResult("TF010", Result.NOT_APPLICABLE)
 
     def checks(self):
         return [
@@ -180,6 +219,24 @@ See https://developer.hashicorp.com/terraform/language/modules/develop/structure
                 ["open-source", "inner-source", "team", "personal"],
                 "Terraform modules should contain a variables.tf file",
                 """When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.
+
+See https://developer.hashicorp.com/terraform/language/modules/develop/structure""",
+            ),
+            Check(
+                "TF010",
+                Severity.LOW,
+                ["open-source", "inner-source", "team", "personal"],
+                "Terraform submodules should be contained in a 'modules' directory",
+                """When creating submodules in a terraform module or project the submodules should be contained in a 'modules' directory. For example:
+root/
+|- modules/
+|  '- my-submodule/
+|     |-main.tf
+|     |-outputs.tf
+|     '-variables.tf
+|-main.tf
+|-outputs.tf
+'-variables.tf
 
 See https://developer.hashicorp.com/terraform/language/modules/develop/structure""",
             ),
