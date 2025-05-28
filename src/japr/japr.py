@@ -102,7 +102,7 @@ class Japr:
                     "result": result.result.name,
                     "filePath": result.file_path,
                     "isFixAvailable": result.fix is not None,
-                    "severity": str(check.severity),
+                    "severity": check.severity.name,
                     "reason": check.reason,
                     "advice": check.advice,
                     "isSuppressed": result.id in suppressed_checks,
