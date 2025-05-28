@@ -1,0 +1,6 @@
+jobs:
+  a-job:
+    script:
+      - echo "This is a job"
+      - echo "This is another job"
+    timeout-minutes: 5

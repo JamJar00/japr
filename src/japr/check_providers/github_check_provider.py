@@ -2,7 +2,9 @@ from japr.check import Check, CheckProvider, CheckFix, CheckResult, Result, Seve
 from git import InvalidGitRepositoryError
 from git.repo import Repo
 import japr.template_util
+import japr.util
 import os
+import yaml
 
 
 class AddIssueTemplateFix(CheckFix):
@@ -129,6 +131,38 @@ class GitHubCheckProvider(CheckProvider):
             fix=AddPullRequestTemplateFix(),
         )
 
+        has_workflow_job = False
+        if os.path.isdir(os.path.join(directory, ".github", "workflows")):
+            workflows = list(
+                japr.util.find_files_with_extension(
+                    os.path.join(directory, ".github", "workflows"), "yaml"
+                )
+            )
+            workflows.extend(
+                japr.util.find_files_with_extension(
+                    os.path.join(directory, ".github", "workflows"), "yml"
+                )
+            )
+
+            for workflow in workflows:
+                with open(workflow, "r") as f:
+                    workflow_yaml = yaml.load(f, yaml.SafeLoader)
+
+                    jobs = workflow_yaml.get("jobs", [])
+                    if len(jobs) > 0:
+                        has_workflow_job = True
+
+                    has_job_timeouts = all("timeout-minutes" in jobs[job] for job in jobs)
+
+                    yield CheckResult(
+                        "GH003",
+                        Result.PASSED if has_job_timeouts else Result.FAILED,
+                        file_path=workflow,
+                    )
+
+        if not has_workflow_job:
+            yield CheckResult("GH003", Result.NOT_APPLICABLE)
+
     def checks(self):
         return [
             Check(
@@ -150,5 +184,15 @@ See https://docs.github.com/en/communities/using-templates-to-encourage-useful-i
 
 Create a .github/pull_request_template.md file and fill it with a template for users to use when filing pull requests
 See https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository""",
+            ),
+            Check(
+                "GH003",
+                Severity.HIGH,
+                ["open-source", "inner-source", "team", "personal"],
+                "GitHub Actions workflows should have timeouts set",
+                """Workflows for GitHub Actions must have timeouts set to avoid hefty charges getting incurred by stuck jobs. By default, the timeout is 6h which is lmost always unecessary
+
+                Add the timeout-minutes property to your job
+                See https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes""",
             ),
         ]
