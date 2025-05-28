@@ -23,8 +23,6 @@ jobs:
       - name: Poetry Install
         run: poetry install
 
-      #- run: poetry run pylama # Disabled for now as black and pylama have different line length abilities with docstrings
-
       - name: Black Lint
         run: poetry run black --check --preview .
 

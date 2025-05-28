@@ -230,18 +230,6 @@ files = [
 ]
 
 [[package]]
-name = "mccabe"
-version = "0.7.0"
-description = "McCabe checker, plugin for flake8"
-optional = false
-python-versions = ">=3.6"
-groups = ["dev"]
-files = [
-    {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
-    {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
-]
-
-[[package]]
 name = "mypy-extensions"
 version = "1.1.0"
 description = "Type system extensions for programs checked with the mypy type checker."
@@ -309,76 +297,6 @@ files = [
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["coverage", "pytest", "pytest-benchmark"]
-
-[[package]]
-name = "pycodestyle"
-version = "2.13.0"
-description = "Python style guide checker"
-optional = false
-python-versions = ">=3.9"
-groups = ["dev"]
-files = [
-    {file = "pycodestyle-2.13.0-py2.py3-none-any.whl", hash = "sha256:35863c5974a271c7a726ed228a14a4f6daf49df369d8c50cd9a6f58a5e143ba9"},
-    {file = "pycodestyle-2.13.0.tar.gz", hash = "sha256:c8415bf09abe81d9c7f872502a6eee881fbe85d8763dd5b9924bb0a01d67efae"},
-]
-
-[[package]]
-name = "pydocstyle"
-version = "6.3.0"
-description = "Python docstring style checker"
-optional = false
-python-versions = ">=3.6"
-groups = ["dev"]
-files = [
-    {file = "pydocstyle-6.3.0-py3-none-any.whl", hash = "sha256:118762d452a49d6b05e194ef344a55822987a462831ade91ec5c06fd2169d019"},
-    {file = "pydocstyle-6.3.0.tar.gz", hash = "sha256:7ce43f0c0ac87b07494eb9c0b462c0b73e6ff276807f204d6b53edc72b7e44e1"},
-]
-
-[package.dependencies]
-snowballstemmer = ">=2.2.0"
-
-[package.extras]
-toml = ["tomli (>=1.2.3) ; python_version < \"3.11\""]
-
-[[package]]
-name = "pyflakes"
-version = "3.3.2"
-description = "passive checker of Python programs"
-optional = false
-python-versions = ">=3.9"
-groups = ["dev"]
-files = [
-    {file = "pyflakes-3.3.2-py2.py3-none-any.whl", hash = "sha256:5039c8339cbb1944045f4ee5466908906180f13cc99cc9949348d10f82a5c32a"},
-    {file = "pyflakes-3.3.2.tar.gz", hash = "sha256:6dfd61d87b97fba5dcfaaf781171ac16be16453be6d816147989e7f6e6a9576b"},
-]
-
-[[package]]
-name = "pylama"
-version = "8.4.1"
-description = "Code audit tool for python"
-optional = false
-python-versions = ">=3.7"
-groups = ["dev"]
-files = [
-    {file = "pylama-8.4.1-py3-none-any.whl", hash = "sha256:5bbdbf5b620aba7206d688ed9fc917ecd3d73e15ec1a89647037a09fa3a86e60"},
-    {file = "pylama-8.4.1.tar.gz", hash = "sha256:2d4f7aecfb5b7466216d48610c7d6bad1c3990c29cdd392ad08259b161e486f6"},
-]
-
-[package.dependencies]
-mccabe = ">=0.7.0"
-pycodestyle = ">=2.9.1"
-pydocstyle = ">=6.1.1"
-pyflakes = ">=2.5.0"
-
-[package.extras]
-all = ["eradicate", "mypy", "pylint", "radon", "vulture"]
-eradicate = ["eradicate"]
-mypy = ["mypy"]
-pylint = ["pylint"]
-radon = ["radon"]
-tests = ["eradicate (>=2.0.0)", "mypy", "pylama-quotes", "pylint (>=2.11.1)", "pytest (>=7.1.2)", "pytest-mypy", "radon (>=5.1.0)", "toml", "types-setuptools", "types-toml", "vulture"]
-toml = ["toml (>=0.10.2)"]
-vulture = ["vulture"]
 
 [[package]]
 name = "pytest"
@@ -479,18 +397,6 @@ files = [
 ]
 
 [[package]]
-name = "snowballstemmer"
-version = "3.0.1"
-description = "This package provides 32 stemmers for 30 languages generated from Snowball algorithms."
-optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*"
-groups = ["dev"]
-files = [
-    {file = "snowballstemmer-3.0.1-py3-none-any.whl", hash = "sha256:6cd7b3897da8d6c9ffb968a6781fa6532dce9c3618a4b127d920dab764a19064"},
-    {file = "snowballstemmer-3.0.1.tar.gz", hash = "sha256:6d5eeeec8e9f84d4d56b847692bacf79bc2c8e90c7f80ca4444ff8b6f2e52895"},
-]
-
-[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -561,4 +467,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "11cec04e0f47f1f5247da940720f59a812ed9987c76714fa8866c39e6a635f5b"
+content-hash = "600f123f1b79a323a99ec3ab1d56527bd0c45bcf8d34f9cb4f72c35793c9dd28"

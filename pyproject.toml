@@ -19,7 +19,6 @@ pyyaml = "^6.0.1"
 jinja2 = "^3.1.3"
 
 [tool.poetry.group.dev.dependencies]
-pylama = "^8.4.1"
 black = "^24.4.2"
 pytest = "^8.2.0"
 
