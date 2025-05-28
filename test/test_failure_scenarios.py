@@ -9,7 +9,13 @@ def pytest_generate_tests(metafunc):
 
 
 def test_scenario_fails_correct_rule(scenario):
-    print("To run this test locally, use the command:\n  poetry run japr test/scenarios/failures/" + scenario + " --json -t open-source | jq '.results[] | select(.id == \"" + scenario + "\")'")
+    print(
+        "To run this test locally, use the command:\n  poetry run japr test/scenarios/failures/"
+        + scenario
+        + " --json -t open-source | jq '.results[] | select(.id == \""
+        + scenario
+        + "\")'"
+    )
 
     result = subprocess.run(
         [

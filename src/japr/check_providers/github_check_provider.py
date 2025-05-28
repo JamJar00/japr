@@ -152,7 +152,9 @@ class GitHubCheckProvider(CheckProvider):
                     if len(jobs) > 0:
                         has_workflow_job = True
 
-                    has_job_timeouts = all("timeout-minutes" in jobs[job] for job in jobs)
+                    has_job_timeouts = all(
+                        "timeout-minutes" in jobs[job] for job in jobs
+                    )
 
                     yield CheckResult(
                         "GH003",
