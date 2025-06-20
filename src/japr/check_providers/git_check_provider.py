@@ -1,7 +1,9 @@
 from japr.check import Check, CheckProvider, CheckResult, Result, Severity
+import japr.util
 from git import InvalidGitRepositoryError
 from git.repo import Repo
 import os
+import stat
 
 IDE_DIRECTORIES = [".vs", ".idea", ".settings"]  # Visual Studio  # Intellij  # Eclipse
 
@@ -61,6 +63,23 @@ class GitCheckProvider(CheckProvider):
             else:
                 yield CheckResult("GI006", Result.PASSED)
 
+            shell_files = set(japr.util.find_executable_files(directory))
+            shell_files.update(japr.util.find_files_with_shebang(directory))
+
+            for shell_file in shell_files:
+                with open(shell_file, "r") as f:
+                    first_line = f.readline().strip()
+                    if first_line.startswith("#!") and not "x" in stat.filemode((repo.tree("HEAD") / os.path.relpath(shell_file, repo.working_dir)).mode):
+                        yield CheckResult(
+                            "GI007",
+                            Result.FAILED,
+                            shell_file,
+                        )
+                    else:
+                        yield CheckResult("GI007", Result.PASSED, shell_file)
+            else:
+                yield CheckResult("GI007", Result.NOT_APPLICABLE)
+
         except InvalidGitRepositoryError:
             yield CheckResult("GI001", Result.FAILED)
             yield CheckResult("GI002", Result.PRE_REQUISITE_CHECK_FAILED)
@@ -68,6 +87,7 @@ class GitCheckProvider(CheckProvider):
             yield CheckResult("GI004", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI005", Result.PRE_REQUISITE_CHECK_FAILED)
             yield CheckResult("GI006", Result.PRE_REQUISITE_CHECK_FAILED)
+            yield CheckResult("GI007", Result.PRE_REQUISITE_CHECK_FAILED)
 
     def checks(self):
         return [
@@ -142,5 +162,14 @@ git config --global core.excludesfile ~/.gitignore
 
 To remove one from the current repository you can use:
 git rm --cached /path/to/file""",
+            ),
+            Check(
+                "GI007",
+                Severity.MEDIUM,
+                ["open-source", "inner-source", "team", "personal"],
+                "Executable files should be stored in Git with the executable flag set",
+                """Linux and OSX systems use the executable flag to determine if a file is executable. Usually git maintains a similar flag with each file however Windows does not have a concept of this and so executable files can be committed into git without the correct executable flag, making them not executable on Linux and OSX. If you have a shell script or other executable file, ensure it is stored in Git with the executable flag set.
+
+                To mark the file as executable in git, use: git update-index --chmod=+x ./path/to/file"""
             ),
         ]
