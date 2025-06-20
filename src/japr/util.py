@@ -29,5 +29,11 @@ def find_files_with_extension(base_path, extension):
     )
 
 
+def find_files_with_extensions(base_path, extensions):
+    for extension in extensions:
+        for f in find_files_with_extension(base_path, extension):
+            yield f
+
+
 def find_files_with_name(base_path, name):
     yield from (obj_path for obj_name, obj_path in _walk(base_path) if obj_name == name)

@@ -9,6 +9,7 @@ from japr.check_providers.contributing_check_provider import ContributingCheckPr
 from japr.check_providers.javascript_check_provider import JavascriptCheckProvider
 from japr.check_providers.rust_check_provider import RustCheckProvider
 from japr.check_providers.terraform_check_provider import TerraformCheckProvider
+from japr.check_providers.shell_check_provider import ShellCheckProvider
 
 check_providers = [
     ReadmeCheckProvider(),
@@ -22,4 +23,5 @@ check_providers = [
     JavascriptCheckProvider(),
     RustCheckProvider(),
     TerraformCheckProvider(),
+    ShellCheckProvider(),
 ]

@@ -122,6 +122,10 @@ poetry generate_docs >> README.md
 - Copyright headers?
 - Code of Conduct file - https://bttger.github.io/contributing-gen-web/
 
+##### Git
+- Files with a shebang/binary executables should be marked as executable in git - sometimes on Windows this flag can be lost
+- Files marked as
+
 ##### Python
 - Support Flit & Setuptools as other dependency managers
     https://peps.python.org/pep-0621/
@@ -217,3 +221,8 @@ poetry generate_docs >> README.md
 | TF008 | Low | open-source, inner-source, team, personal | Terraform modules should contain an outputs.tf file | When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
 | TF009 | Low | open-source, inner-source, team, personal | Terraform modules should contain a variables.tf file | When creating terraform modules (or using terraform in general) each module should contain a minimum of a main.tf, outputs.tf and a variables.tf file, even if these are empty.</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
 | TF010 | Low | open-source, inner-source, team, personal | Terraform submodules should be contained in a 'modules' directory | When creating submodules in a terraform module or project the submodules should be contained in a 'modules' directory. For example:</br>root/</br>|- modules/</br>|  '- my-submodule/</br>|     |-main.tf</br>|     |-outputs.tf</br>|     '-variables.tf</br>|-main.tf</br>|-outputs.tf</br>'-variables.tf</br></br>See https://developer.hashicorp.com/terraform/language/modules/develop/structure |
+
+### Shell
+| ID | Severity | Enabled for Project Types | Description | Advice |
+|----|----------|---------------------------|-------------|--------|
+| SH001 | Medium | open-source, inner-source, team, personal | Shell scripts marked as executable should contain a shebang | Shell scripts should start with a shebang (e.g., `#!/bin/bash` or `#!/usr/bin/env bash`) to specify the interpreter that should be used to execute the script. This ensures that the script runs correctly regardless of the user's environment. |
