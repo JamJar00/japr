@@ -37,9 +37,12 @@ def find_files_with_extensions(base_path, extensions):
 
 def find_files_with_shebang(base_path):
     def has_shebang(path):
-        with open(path, "r") as f:
-            first_line = f.readline().strip()
-            return first_line.startswith("#!")
+        try:
+            with open(path, "r") as f:
+                first_line = f.readline().strip()
+                return first_line.startswith("#!")
+        except UnicodeDecodeError:
+            return False
 
     yield from (obj_path for _, obj_path in _walk(base_path) if has_shebang(obj_path))
 
