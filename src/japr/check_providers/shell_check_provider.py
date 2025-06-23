@@ -14,7 +14,9 @@ class ShellCheckProvider(CheckProvider):
         # Windows doesn't have a concept of executable files so skip these checks
         if platform.system() == "Windows" and len(executable_files) > 0:
             for executable_file in executable_files:
-                yield CheckResult("SH001", Result.PRE_REQUISITE_CHECK_FAILED, executable_file)
+                yield CheckResult(
+                    "SH001", Result.PRE_REQUISITE_CHECK_FAILED, executable_file
+                )
         else:
             if len(executable_files) > 0:
                 for executable_file in executable_files:
@@ -31,7 +33,9 @@ class ShellCheckProvider(CheckProvider):
 
         if platform.system() == "Windows" and len(shebang_files) > 0:
             for shebang_file in shebang_files:
-                yield CheckResult("SH002", Result.PRE_REQUISITE_CHECK_FAILED, shebang_file)
+                yield CheckResult(
+                    "SH002", Result.PRE_REQUISITE_CHECK_FAILED, shebang_file
+                )
         else:
             if len(shebang_files) > 0:
                 for shebang_file in shebang_files:
@@ -45,7 +49,6 @@ class ShellCheckProvider(CheckProvider):
                         yield CheckResult("SH002", Result.PASSED, shebang_file)
             else:
                 yield CheckResult("SH002", Result.NOT_APPLICABLE)
-
 
     def checks(self):
         return [
@@ -70,4 +73,3 @@ class ShellCheckProvider(CheckProvider):
                  This check cannot be run on Windows""",
             ),
         ]
-

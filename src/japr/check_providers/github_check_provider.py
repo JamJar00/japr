@@ -134,8 +134,8 @@ class GitHubCheckProvider(CheckProvider):
         has_workflow_job = False
         if os.path.isdir(os.path.join(directory, ".github", "workflows")):
             workflows = japr.util.find_files_with_extensions(
-                    os.path.join(directory, ".github", "workflows"), ["yaml", "yml"]
-                )
+                os.path.join(directory, ".github", "workflows"), ["yaml", "yml"]
+            )
 
             for workflow in workflows:
                 with open(workflow, "r") as f:

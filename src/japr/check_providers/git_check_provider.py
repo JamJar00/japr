@@ -69,7 +69,12 @@ class GitCheckProvider(CheckProvider):
             for shell_file in shell_files:
                 with open(shell_file, "r") as f:
                     first_line = f.readline().strip()
-                    if first_line.startswith("#!") and not "x" in stat.filemode((repo.tree("HEAD") / os.path.relpath(shell_file, repo.working_dir)).mode):
+                    if first_line.startswith("#!") and not "x" in stat.filemode(
+                        (
+                            repo.tree("HEAD")
+                            / os.path.relpath(shell_file, repo.working_dir)
+                        ).mode
+                    ):
                         yield CheckResult(
                             "GI007",
                             Result.FAILED,
@@ -170,6 +175,6 @@ git rm --cached /path/to/file""",
                 "Executable files should be stored in Git with the executable flag set",
                 """Linux and OSX systems use the executable flag to determine if a file is executable. Usually git maintains a similar flag with each file however Windows does not have a concept of this and so executable files can be committed into git without the correct executable flag, making them not executable on Linux and OSX. If you have a shell script or other executable file, ensure it is stored in Git with the executable flag set.
 
-                To mark the file as executable in git, use: git update-index --chmod=+x ./path/to/file"""
+                To mark the file as executable in git, use: git update-index --chmod=+x ./path/to/file""",
             ),
         ]

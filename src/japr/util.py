@@ -12,6 +12,7 @@ SKIP_DIRECTORIES = [
     ".terraform",
 ]
 
+
 def _walk(base_path):
     with os.scandir(base_path) as scan:
         for obj in scan:
@@ -40,11 +41,7 @@ def find_files_with_shebang(base_path):
             first_line = f.readline().strip()
             return first_line.startswith("#!")
 
-    yield from (
-        obj_path
-        for _, obj_path in _walk(base_path)
-        if has_shebang(obj_path)
-    )
+    yield from (obj_path for _, obj_path in _walk(base_path) if has_shebang(obj_path))
 
 
 def find_executable_files(base_path):
