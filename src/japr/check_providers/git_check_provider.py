@@ -67,9 +67,8 @@ class GitCheckProvider(CheckProvider):
             shell_files.update(japr.util.find_files_with_shebang(directory))
 
             for shell_file in shell_files:
-                with open(shell_file, "r") as f:
-                    first_line = f.readline().strip()
-                    if first_line.startswith("#!") and not "x" in stat.filemode(
+                try:
+                    if "x" not in stat.filemode(
                         (
                             repo.tree("HEAD")
                             / os.path.relpath(shell_file, repo.working_dir)
@@ -82,6 +81,8 @@ class GitCheckProvider(CheckProvider):
                         )
                     else:
                         yield CheckResult("GI007", Result.PASSED, shell_file)
+                except KeyError:
+                    yield CheckResult("GI007", Result.NOT_APPLICABLE)
             else:
                 yield CheckResult("GI007", Result.NOT_APPLICABLE)
 
