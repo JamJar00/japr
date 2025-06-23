@@ -131,6 +131,9 @@ poetry generate_docs >> README.md
 - Pull request templates/issue templates should have YAML front matter
 - Issue templates should be in the .github folder
 
+##### Shell
+- Shebangs should be on the first line of a file otherwise they won't do anything
+
 ##### Sketchy Ideas
 - Has git tags for versions?
   - Versions in project files match latest git tag
