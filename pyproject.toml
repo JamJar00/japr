@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Japr"
-version = "1.4.0"
+version = "1.4.1"
 description = "A cross-language tool for rating the overall quality of open source, commercial and personal projects"
 authors = ["Jamie Read <hey@jread.dev>"]
 license = "MIT"
